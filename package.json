@@ -1,7 +1,7 @@
 {
   "name": "juexiao-stat-sdk",
-  "version": "0.0.0",
-  "description": "",
+  "version": "0.0.1",
+  "description": "juexiao statitics sdk with javascript",
   "keywords": [],
   "main": "dist/juexiao-stat-sdk.umd.js",
   "module": "dist/juexiao-stat-sdk.es5.js",
@@ -9,7 +9,7 @@
   "files": [
     "dist"
   ],
-  "author": "hwq <1102684711@qq.com>",
+  "author": "yechuanjie <1102684711@qq.com>",
   "repository": {
     "type": "git",
     "url": ""
@@ -101,6 +101,7 @@
     "replace-in-file": "^3.4.2",
     "rimraf": "^2.6.2",
     "rollup": "^0.67.0",
+    "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-commonjs": "^9.1.8",
     "rollup-plugin-json": "^3.1.0",
     "rollup-plugin-node-resolve": "^3.4.0",
