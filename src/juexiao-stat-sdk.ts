@@ -1,8 +1,9 @@
 import MiniStatSDK from './sdk/miniprogram'
 import BrowserStatSDK from './sdk/browser'
-export { MiniStatSDK, BrowserStatSDK }
 
-export default {
+const JueXiaoStatSDK = {
   MiniStatSDK,
   BrowserStatSDK
 }
+export { MiniStatSDK, BrowserStatSDK }
+export default JueXiaoStatSDK
