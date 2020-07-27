@@ -1,14 +1,14 @@
 import { BrowserStatSDK } from '../src/juexiao-stat-sdk'
 
 /**
- * Dummy test
+ * BrowserStatSDK test
  */
-describe('Dummy test', () => {
+describe('BrowserStatSDK test', () => {
   it('works if true is truthy', () => {
     expect(true).toBeTruthy()
   })
 
-  it('DummyClass is instantiable', () => {
+  it('BrowserStatSDK Class is instantiable', () => {
     expect(new BrowserStatSDK()).toBeInstanceOf(BrowserStatSDK)
   })
 })
