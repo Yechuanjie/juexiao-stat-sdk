@@ -6,9 +6,6 @@ notifications:
   email: true
 node_js:
   - '10'
-  - '11'
-  - '8'
-  - '6'
 before_script:
   - yarn install
 script:
