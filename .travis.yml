@@ -14,6 +14,14 @@ after_success:
   - npm run travis-deploy-once "npm run report-coverage"
   - if [ "$TRAVIS_BRANCH" = "master" -a "$TRAVIS_PULL_REQUEST" = "false" ]; then npm run travis-deploy-once "npm run deploy-docs"; fi
   - if [ "$TRAVIS_BRANCH" = "master" -a "$TRAVIS_PULL_REQUEST" = "false" ]; then npm run travis-deploy-once "npm run semantic-release"; fi
+
+deploy:
+  provider: npm,
+  email: 1102684711@qq.com
+  api_key: ${NPM_AUTH_TOKEN}
+  on:
+    tags: true
+  skip_cleanup: 'true'
 branches:
   except:
     - /^v\d+\.\d+\.\d+$/
