@@ -4,6 +4,7 @@ export default class JueXiaoBrowserStatSDK {
   init() {
     this.options.distinct_id = 'testid'
     this.options.time = new Date().getTime()
+    this.options.type = 'track'
     console.info(this.options)
   }
 }
