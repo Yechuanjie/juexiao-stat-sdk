@@ -12,7 +12,7 @@
   "author": "yechuanjie <1102684711@qq.com>",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/Yechuanjie/juexiao-stat-sdk.git"
   },
   "license": "MIT",
   "engines": {
@@ -118,5 +118,8 @@
     "tslint-config-standard": "^8.0.1",
     "typedoc": "^0.12.0",
     "typescript": "^3.0.3"
+  },
+  "dependencies": {
+    "juexiao-stat-sdk": "^0.0.1"
   }
 }

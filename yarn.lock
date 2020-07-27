@@ -5235,6 +5235,11 @@ jsprim@^1.2.2:
     json-schema "0.2.3"
     verror "1.10.0"
 
+juexiao-stat-sdk@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.npmjs.org/juexiao-stat-sdk/-/juexiao-stat-sdk-0.0.1.tgz#8992e07bca897e37b64d33a2c7e1391544e041bd"
+  integrity sha512-Du1F43nPwyo1px4+DS+NnffRUsLDpu0T58rX/vUVpqQD2pnb5HcrrM6a9sdimQAWfInyqSrmFJICHOrJElkhSg==
+
 keyv@^3.0.0:
   version "3.1.0"
   resolved "https://registry.npm.taobao.org/keyv/download/keyv-3.1.0.tgz#ecc228486f69991e49e9476485a5be1e8fc5c4d9"

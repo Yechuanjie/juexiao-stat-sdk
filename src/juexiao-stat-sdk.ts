@@ -1,4 +1,3 @@
-
-export function power(base: number, exponent: number): number {
-  return base ** exponent
-}
+import MiniStatSDK from './sdk/miniprogram'
+import BrowserStatSDK from './sdk/browser'
+export { MiniStatSDK, BrowserStatSDK }
