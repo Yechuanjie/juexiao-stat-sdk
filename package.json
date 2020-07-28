@@ -34,6 +34,21 @@
     "precommit": "lint-staged",
     "travis-deploy-once": "travis-deploy-once"
   },
+  "release": {
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      [
+        "@semantic-release/github",
+        {
+          "assets": [
+            "CHANGELOG.md"
+          ],
+          "message": "chore(release): ${nextRelease.version} [ci skip]"
+        }
+      ]
+    ]
+  },
   "lint-staged": {
     "{src,test}/**/*.ts": [
       "prettier --write",
