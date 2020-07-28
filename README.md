@@ -1,6 +1,9 @@
 ### JueXiao Statistics SDK With JavaScript
 
-##### 框架使用 semantic-release 管理 npm 包版本
+
+##### 开发 sdk 注意事项
+
+> 框架使用 semantic-release 管理 npm 包版本
 
 对于每次更改，使用 `commitlint` 限制，只有当 `git` 提交的 `commit message` 满足`xxx: xxxx`格式，并且推送到 `master` 分支时才会触发 `npm publish`。
 
