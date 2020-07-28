@@ -7,9 +7,9 @@ notifications:
 node_js:
   - '10'
 before_script:
-  - yarn install
+  - npm install
 script:
-  - yarn test:prod && yarn build
+  - npm run test:prod && npm run build
 after_success:
   - npm run travis-deploy-once "npm run report-coverage"
   - if [ "$TRAVIS_BRANCH" = "master" -a "$TRAVIS_PULL_REQUEST" = "false" ]; then npm run travis-deploy-once "npm run deploy-docs"; fi
