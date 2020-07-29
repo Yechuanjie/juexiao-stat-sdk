@@ -6,6 +6,7 @@ export default class JueXiaoBrowserStatSDK {
     this.options.time = new Date().getTime()
     this.options.type = '_trackevent'
     this.options.event = 'click'
+    this.options.$is_login = true
     console.info(this.options)
   }
 }
