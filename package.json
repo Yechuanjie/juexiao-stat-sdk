@@ -1,6 +1,6 @@
 {
   "name": "juexiao-stat-sdk",
-  "version": "0.1.0",
+  "version": "1.0.2",
   "description": "juexiao statitics sdk with javascript",
   "keywords": [],
   "main": "dist/juexiao-stat-sdk.umd.js",
@@ -120,6 +120,6 @@
     "typescript": "^3.0.3"
   },
   "dependencies": {
-    "juexiao-stat-sdk": "^0.0.1"
+    "juexiao-stat-sdk": "^1.0.1"
   }
 }
