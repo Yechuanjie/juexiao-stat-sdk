@@ -1,5 +1,8 @@
 import { UserEvent } from '../types/index'
 export default class JueXiaoBrowserStatSDK {
+  constructor(props: Object) {
+    console.info(props)
+  }
   options = {} as UserEvent
   init() {
     this.options.distinct_id = 'testidwwwww'
