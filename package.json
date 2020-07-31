@@ -49,13 +49,14 @@
     "transform": {
       ".(ts|tsx)": "ts-jest"
     },
-    "testEnvironment": "node",
+    "testEnvironment": "jsdom",
     "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
     "moduleFileExtensions": [
       "ts",
       "tsx",
       "js"
     ],
+    "verbose": false,
     "coveragePathIgnorePatterns": [
       "/node_modules/",
       "/test/"
@@ -120,6 +121,7 @@
     "typescript": "^3.0.3"
   },
   "dependencies": {
-    "juexiao-stat-sdk": "^1.0.1"
+    "juexiao-stat-sdk": "^1.0.1",
+    "mobile-detect": "^1.4.4"
   }
 }

@@ -7,7 +7,7 @@ import json from 'rollup-plugin-json'
 
 const pkg = require('./package.json')
 
-const libraryName = 'juexiao-stat-sdk'
+const libraryName = `juexiao-stat-sdk`
 
 const env = process.env.NODE_ENV
 console.info(env)

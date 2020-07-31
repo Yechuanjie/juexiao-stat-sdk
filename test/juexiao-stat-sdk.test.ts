@@ -1,5 +1,4 @@
 import { BrowserStatSDK } from '../src/juexiao-stat-sdk'
-
 /**
  * BrowserStatSDK test
  */
@@ -9,6 +8,7 @@ describe('BrowserStatSDK test', () => {
   })
 
   it('BrowserStatSDK Class is instantiable', () => {
-    expect(new BrowserStatSDK()).toBeInstanceOf(BrowserStatSDK)
+    const stat = new BrowserStatSDK()
+    expect(stat).toBeInstanceOf(BrowserStatSDK)
   })
 })
