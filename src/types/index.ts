@@ -1,10 +1,10 @@
 interface CustomProperties<T> {}
 
 export interface UserEvent {
-  /** 用户唯一id，在用户没用登录的时候，移动端使用用户唯一设备id代替，web端使用session_id代替，微信端建议使用open_id代替，用户登录了，使用注册的id(觉晓号); */
+  /** 用户唯一id，在用户没用登录的时候，移动端使用用户唯一设备id代替，web端使用UUID代替，微信端建议使用open_id代替，用户登录了，使用注册的id(觉晓号); */
   distinct_id: string
   /** 事件产生的时间，使用13位的时间戳表示(精确到毫秒) */
-  time: string
+  time: number
   /** 事件上报的接口 */
   type: string
   /** 事件名称，在明确上报信息是用户信息的时候没有这个字段 */

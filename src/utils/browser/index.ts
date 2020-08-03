@@ -36,11 +36,11 @@ export function getOsInfo() {
   let browserVersion = ''
   if (!isMobile) {
     const info = {
-      IE: /tablet|msie/.test(ua) && !/opera/.test(ua), //匹配IE浏览器
-      Opera: /opera/.test(ua), //匹配Opera浏览器
-      Safari: /version.*safari/.test(ua), //匹配Safari浏览器
-      Chrome: /chrome/.test(ua), //匹配Chrome浏览器
-      Firefox: /gecko/.test(ua) && !/webkit/.test(ua) //匹配Firefox浏览器
+      IE: /tablet|msie/.test(ua) && !/opera/.test(ua), // 匹配IE浏览器
+      Opera: /opera/.test(ua), // 匹配Opera浏览器
+      Safari: /version.*safari/.test(ua), // 匹配Safari浏览器
+      Chrome: /chrome/.test(ua), // 匹配Chrome浏览器
+      Firefox: /gecko/.test(ua) && !/webkit/.test(ua) // 匹配Firefox浏览器
     }
     const browserInfo = Object.keys(info).filter(browser => info[browser])
     if (browserInfo.length) {
@@ -78,13 +78,10 @@ export function getOsInfo() {
  */
 export function generateUUID(sdkType: LibrayType = 'js'): string {
   let d = new Date().getTime()
-  if (window.performance && typeof window.performance.now === 'function') {
-    d += performance.now() //use high-precision timer if available
-  }
   let uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
     let r = (d + Math.random() * 16) % 16 | 0
     d = Math.floor(d / 16)
-    return (c == 'x' ? r : (r & 0x3) | 0x8).toString(16)
+    return (c === 'x' ? r : (r & 0x3) | 0x8).toString(16)
   })
   return `${sdkType}_${uuid}`
 }

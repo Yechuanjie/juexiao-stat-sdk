@@ -9,7 +9,7 @@ export default class JueXiaoBrowserStatSDK {
     this.userTrackEvent.$is_login = false
     this.userTrackEvent.distinct_id = generateUUID()
     this.userTrackEvent.type = ''
-    this.userTrackEvent.time = ''
+    this.userTrackEvent.time = new Date().getTime()
     this.userTrackEvent.properties = this.registerPresetProperties()
     console.info('USER_EVENT_MODAL', this.userTrackEvent)
   }
