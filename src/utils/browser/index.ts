@@ -28,8 +28,8 @@ export function getOsInfo() {
     const index = ua.indexOf('windows')
     osVersion = String(parseFloat(ua.slice(index + 11)))
   } else {
-    os = 'unkown'
-    osVersion = '0'
+    // os = ''
+    // osVersion = ''
   }
   // PC需要返回浏览器信息
   let browser = ''
