@@ -28,7 +28,7 @@ export default class JueXiaoBrowserStatSDK {
     console.info('USER_EVENT_MODAL', this.trackData)
   }
   /**
-   *初始化UUID
+   * 初始化UUID
    *
    * @private
    * @returns {string}
