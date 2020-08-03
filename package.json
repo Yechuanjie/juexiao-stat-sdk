@@ -1,8 +1,12 @@
 {
   "name": "juexiao-stat-sdk",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "juexiao statitics sdk with javascript",
-  "keywords": ["utils", "SDK", "Statistics"],
+  "keywords": [
+    "utils",
+    "SDK",
+    "Statistics"
+  ],
   "main": "dist/juexiao-stat-sdk.umd.js",
   "module": "dist/juexiao-stat-sdk.es5.js",
   "typings": "dist/types/juexiao-stat-sdk.d.ts",
