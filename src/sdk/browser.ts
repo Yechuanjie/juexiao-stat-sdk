@@ -14,12 +14,19 @@ export default class JueXiaoBrowserStatSDK {
   sdkType: LibrayType = 'js'
   private userTrackEvent = {} as UserEvent
   constructor() {
+    this.init()
+  }
+  protected init() {
     this.userTrackEvent.distinct_id = generateUUID()
     this.userTrackEvent.$is_login = false
     this.userTrackEvent.type = TRACK_TYPE.PROFILESET
     this.userTrackEvent.time = new Date().getTime()
     this.userTrackEvent.properties = this.registerPresetProperties()
     console.info('USER_EVENT_MODAL', this.userTrackEvent)
+    this.track()
+  }
+  track() {
+    console.info('track...')
   }
   /**
    * 注册预置属性

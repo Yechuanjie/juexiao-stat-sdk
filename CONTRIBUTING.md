@@ -1,17 +1,13 @@
-We're really glad you're reading this, because we need volunteer developers to help this project come to fruition. 👏
+##### 开发 sdk 注意事项
 
-## Instructions
+> 框架使用 semantic-release 管理 npm 包版本
 
-These steps will guide you through contributing to this project:
+对于每次更改，使用 `commitlint` 限制，只有当 `git` 提交的 `commit message` 满足`xxx: xxxx`格式，并且推送到 `master` 分支时才会触发 `npm publish`。
 
-- Fork the repo
-- Clone it and install dependencies
+如：
 
-		git clone https://github.com/YOUR-USERNAME/typescript-library-starter
-		npm install
+```shell
+git commit -m 'fix: fix a bug'
+```
 
-Keep in mind that after running `npm install` the git repo is reset. So a good way to cope with this is to have a copy of the folder to push the changes, and the other to try them.
-
-Make and commit your changes. Make sure the commands npm run build and npm run test:prod are working.
-
-Finally send a [GitHub Pull Request](https://github.com/alexjoverm/typescript-library-starter/compare?expand=1) with a clear list of what you've done (read more [about pull requests](https://help.github.com/articles/about-pull-requests/)). Make sure all of your commits are atomic (one feature per commit).
+`npm publish` 默认从 `1.0.0` 开始，当发布成功后，可在 `npm` 官网查看最新版本，并且 `GitHub` 仓库的 `Releases` 板块也会更新历史版本信息。

@@ -1,16 +1,40 @@
-### JueXiao Statistics SDK With JavaScript
+## JueXiao Statistics SDK With JavaScript
 
-
-##### 开发 sdk 注意事项
-
-> 框架使用 semantic-release 管理 npm 包版本
-
-对于每次更改，使用 `commitlint` 限制，只有当 `git` 提交的 `commit message` 满足`xxx: xxxx`格式，并且推送到 `master` 分支时才会触发 `npm publish`。
-
-如：
+#### 安装
 
 ```shell
-git commit -m 'fix: fix a bug'
+// use npm
+npm install juexiao-stat-sdk
+
+// use yarn
+yarn add juexiao-stat-sdk
 ```
 
-`npm publish` 默认从 `1.0.0` 开始，当发布成功后，可在 `npm` 官网查看最新版本，并且 `GitHub` 仓库的 `Releases` 板块也会更新历史版本信息。
+
+
+注意：`sdk` 只支持 `web/h5` 和  `微信小程序` 环境使用，两种环境完全独立，使用 `es6 ` 的 `import` 语法按需引入不同环境对应的模块。
+
+#### web/h5
+
+##### 在Vue项目中使用：
+
+main.js中引入
+
+```javascript
+import { BrowserStatSDK } from 'juexiao-stat-sdk'
+const stat = new BrowserStatSDK()
+// 全局注册
+Vue.prototype.stat = stat
+...
+```
+
+在需要埋点的地方使用，如index.vue
+
+```javascript
+...
+methods: {
+  btnClick() {
+    stat.track(...)
+  }
+}
+```
