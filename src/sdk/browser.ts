@@ -1,6 +1,9 @@
 import { PresetProperties, UserEvent, LibrayType, OSType } from '../types'
 import { getOsInfo, generateUUID } from '../utils/browser/index'
-
+/**
+ * track type 类型
+ * @enum {number}
+ */
 enum TRACK_TYPE {
   TRACK = 'track',
   PROFILESET = 'profile_set'
