@@ -1,14 +1,19 @@
 import { PresetProperties, UserEvent, LibrayType, OSType } from '../types'
 import { getOsInfo, generateUUID } from '../utils/browser/index'
 
+enum TRACK_TYPE {
+  TRACK = 'track',
+  PROFILESET = 'profile_set'
+}
+
 export default class JueXiaoBrowserStatSDK {
   sdkVersion: string = process.env.npm_package_version || ''
   sdkType: LibrayType = 'js'
   private userTrackEvent = {} as UserEvent
   constructor() {
-    this.userTrackEvent.$is_login = false
     this.userTrackEvent.distinct_id = generateUUID()
-    this.userTrackEvent.type = ''
+    this.userTrackEvent.$is_login = false
+    this.userTrackEvent.type = TRACK_TYPE.PROFILESET
     this.userTrackEvent.time = new Date().getTime()
     this.userTrackEvent.properties = this.registerPresetProperties()
     console.info('USER_EVENT_MODAL', this.userTrackEvent)
