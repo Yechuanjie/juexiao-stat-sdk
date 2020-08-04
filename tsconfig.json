@@ -16,6 +16,8 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "noImplicitAny": false,
+    "downlevelIteration": true,
+    "resolveJsonModule": true,
     "declarationDir": "dist/types",
     "outDir": "dist/lib",
     "typeRoots": [
@@ -23,8 +25,7 @@
     ]
   },
   "include": [
-    "src",
-    "./index.d.ts" 
+    "src"
   ],
   "exclude": [
     "dist"

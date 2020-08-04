@@ -3,6 +3,7 @@
  * Released under the MIT license
  * Date: 2020-07-30
  * Author: Yechuanjie
+ * Copyright (c) Juexiao Time. All rights reserved.
  */
 
 import MiniStatSDK from './sdk/miniprogram'

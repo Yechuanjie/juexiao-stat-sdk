@@ -8,7 +8,9 @@ describe('BrowserStatSDK test', () => {
   })
 
   it('BrowserStatSDK Class is instantiable', () => {
-    const stat = new BrowserStatSDK('test-project')
+    const stat = new BrowserStatSDK({
+      id: 'test-id-xxxxxxx'
+    })
     expect(stat).toBeInstanceOf(BrowserStatSDK)
   })
 })

@@ -1,30 +1,35 @@
-import { PresetProperties, UserEvent, LibrayType, OSType, TRACK_TYPE, LOCAL_KEYS } from '../types'
+import {
+  PresetProperties,
+  UserEvent,
+  LibrayType,
+  OSType,
+  TRACK_TYPE,
+  JSOptions,
+  Constants
+} from '../types'
+import { version } from '../../package.json'
 import { getOsInfo, generateUUID } from '../utils/browser/index'
+// import { Constants } from '../types/constants'
 
 export default class JueXiaoBrowserStatSDK {
-  sdkVersion: string = process.env.npm_package_version || ''
-  sdkType: LibrayType = LOCAL_KEYS.LIBRARY_JS
+  private sdkVersion: string = version || ''
+  private sdkType: LibrayType = Constants.LIBRARY_JS
+  /** 项目唯一标识 */
+  private project_id = ''
   private trackData = {} as UserEvent
   /**
-   * Creates an instance of JueXiaoBrowserStatSDK.
-   * @param {string} project 项目唯一标识
+   *Creates an instance of JueXiaoBrowserStatSDK.
+   * @param {JSOptions} options
    * @memberof JueXiaoBrowserStatSDK
    */
-  constructor(project: string) {
-    this.init(project)
+  constructor(options: JSOptions) {
+    this.project_id = options.id
+    this.init()
   }
-  private init(project: string) {
-    this.trackData.project = project
+  private init() {
     this.trackData.distinct_id = this.initUserId()
     this.trackData.$is_login = false
     this.trackData.properties = this.registerPresetProperties()
-    // 移除为空的属性
-    // const props = Object.assign({}, this.trackData.properties)
-    // Object.keys(props).forEach(key => {
-    //   if (props[key] === '') {
-    //     delete this.trackData.properties[key]
-    //   }
-    // })
     console.info('USER_EVENT_MODAL', this.trackData)
   }
   /**
@@ -35,10 +40,10 @@ export default class JueXiaoBrowserStatSDK {
    * @memberof JueXiaoBrowserStatSDK
    */
   private initUserId(): string {
-    let uuid = window.localStorage.getItem(LOCAL_KEYS.JUEXIAO_STAT_UUID)
+    let uuid = window.localStorage.getItem(Constants.JUEXIAO_STAT_UUID)
     if (!uuid) {
       uuid = generateUUID()
-      window.localStorage.setItem(LOCAL_KEYS.JUEXIAO_STAT_UUID, uuid)
+      window.localStorage.setItem(Constants.JUEXIAO_STAT_UUID, uuid)
     }
     return uuid
   }
@@ -47,7 +52,6 @@ export default class JueXiaoBrowserStatSDK {
     this.trackData.type = trackType
     this.trackData.time = new Date().getTime()
     if (data) this.trackData.properties = data
-    // todo api上报数据
   }
 
   track(eventName: string, data = {}) {
@@ -85,19 +89,23 @@ export default class JueXiaoBrowserStatSDK {
   private registerPresetProperties(): PresetProperties {
     const preset = {} as PresetProperties
     const osInfo = getOsInfo()
-    preset.$browser = osInfo.browser
-    preset.$browser_version = osInfo.browserVersion
     preset.$lib = this.sdkType
     preset.$lib_version = this.sdkVersion
-    if (navigator.hasOwnProperty('connection')) {
+    // preset.$network_type = navigator['connection'].effectiveType
+    if (navigator['connection']) {
       preset.$network_type = navigator['connection'].effectiveType
     } else {
       preset.$network_type = '4G'
     }
-    preset.$os = osInfo.os as OSType
-    preset.$os_version = osInfo.osVersion
     preset.$screen_height = window.innerHeight
     preset.$screen_width = window.innerWidth
+    preset.$os = osInfo.os as OSType
+    preset.$os_version = osInfo.osVersion
+
+    if (!osInfo.isMobile) {
+      preset.$browser = osInfo.browser
+      preset.$browser_version = osInfo.browserVersion
+    }
     // 下面四个属性，在 web/h5 端无法获取，默认不需要
     // preset.$brand = ''
     // preset.$manufacturer = ''

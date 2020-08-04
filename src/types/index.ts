@@ -7,8 +7,6 @@ export interface UserEvent {
   time: number
   /** 事件上报的类型 */
   type: TRACK_TYPE
-  /** 项目唯一标识 */
-  project: string
   /** 事件名称，在明确上报信息是用户信息的时候没有这个字段 */
   event?: string
   /** 是否登录 */
@@ -19,6 +17,9 @@ export interface UserEvent {
 export type OSType = 'Android' | 'IOS' | 'Windows' | 'Mac'
 export type NetworkType = 'wifi' | '2G' | '3G' | '4G' | '5G'
 export type LibrayType = 'js' | 'miniprogram'
+export type JSOptions = {
+  id: string
+}
 
 /**
  * 预置属性
@@ -65,7 +66,8 @@ export type PresetProperties = {
  */
 export type TRACK_TYPE = 'track' | 'trackSignUp' | 'profileSet' | 'profileSetOnce'
 
-export enum LOCAL_KEYS {
+export enum Constants {
+  FETCH_URL = 'https://sdk.juexiaotime.com/sdk_js',
   JUEXIAO_STAT_UUID = 'JUEXIAO_STAT_UUID',
   LIBRARY_JS = 'js',
   LIBRARY_MINI = 'miniprogram'

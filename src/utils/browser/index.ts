@@ -28,8 +28,8 @@ export function getOsInfo() {
     const index = ua.indexOf('windows')
     osVersion = String(parseFloat(ua.slice(index + 11)))
   } else {
-    // os = ''
-    // osVersion = ''
+    os = 'Other'
+    osVersion = '1'
   }
   // PC需要返回浏览器信息
   let browser = ''
@@ -58,15 +58,27 @@ export function getOsInfo() {
         console.info(ua, index)
         browserVersion = String(parseFloat(ua.slice(index + browser.length + 1))) || ''
       }
+    } else {
+      browser = 'Other'
+      browserVersion = '1'
     }
   }
 
-  return {
+  const obj = {
+    isMobile,
     os,
     osVersion,
     browser,
     browserVersion
   }
+  // // 移除为空的属性
+  // const props = Object.assign({}, obj)
+  // Object.keys(props).forEach(key => {
+  //   if (props[key] === '') {
+  //     delete obj[key]
+  //   }
+  // })
+  return obj
 }
 
 /**
@@ -85,3 +97,5 @@ export function generateUUID(sdkType: LibrayType = 'js'): string {
   })
   return `${sdkType}_${uuid}`
 }
+
+export function http() {}
