@@ -16,15 +16,15 @@ export default class JueXiaoBrowserStatSDK {
   private sdkVersion: string = version || ''
   private sdkType: LibrayType = Constants.LIBRARY_JS
   /** 项目唯一标识 */
-  private project_id = ''
+  private projectId = ''
   private trackData = {} as UserEvent
   /**
-   *Creates an instance of JueXiaoBrowserStatSDK.
+   * Creates an instance of JueXiaoBrowserStatSDK.
    * @param {JSOptions} options
    * @memberof JueXiaoBrowserStatSDK
    */
   constructor(options: JSOptions) {
-    this.project_id = options.id
+    this.projectId = options.id
     this.init()
   }
   private init() {

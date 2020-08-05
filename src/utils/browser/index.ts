@@ -98,4 +98,6 @@ export function generateUUID(sdkType: LibrayType = 'js'): string {
   return `${sdkType}_${uuid}`
 }
 
-export function http() {}
+export function http() {
+  console.info('http')
+}
