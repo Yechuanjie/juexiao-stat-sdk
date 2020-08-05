@@ -15,9 +15,9 @@
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
+    "esModuleInterop": true,
     "noImplicitAny": false,
-    "downlevelIteration": true,
-    "resolveJsonModule": true,
+    // "resolveJsonModule": true,
     "declarationDir": "dist/types",
     "outDir": "dist/lib",
     "typeRoots": [
@@ -26,8 +26,5 @@
   },
   "include": [
     "src"
-  ],
-  "exclude": [
-    "dist"
   ]
 }

@@ -7,9 +7,10 @@ import {
   JSOptions,
   Constants
 } from '../types'
-import { version } from '../../package.json'
+// import { version } from '../../package.json'
 import { getOsInfo, generateUUID } from '../utils/browser/index'
-// import { Constants } from '../types/constants'
+const pkg = require('../../package.json')
+const version = pkg.version
 
 export default class JueXiaoBrowserStatSDK {
   private sdkVersion: string = version || ''
@@ -52,6 +53,7 @@ export default class JueXiaoBrowserStatSDK {
     this.trackData.type = trackType
     this.trackData.time = new Date().getTime()
     if (data) this.trackData.properties = data
+    // todo api
   }
 
   track(eventName: string, data = {}) {
