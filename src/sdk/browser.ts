@@ -51,7 +51,7 @@ export default class JueXiaoBrowserStatSDK {
     this.trackData.type = trackType
     this.trackData.time = new Date().getTime()
     if (data) this.trackData.properties = data
-    requestPost(this.projectId, Constants.FETCH_URL, this.trackData).then(res => {
+    return requestPost(this.projectId, Constants.FETCH_URL, this.trackData).then(res => {
       console.info(res)
     })
   }

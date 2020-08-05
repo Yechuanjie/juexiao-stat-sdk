@@ -12,7 +12,7 @@ const libraryName = `juexiao-stat-sdk`
 
 const env = process.env.NODE_ENV
 
-console.info('env: ', process.env.NODE_ENV)
+console.info('env: ', env)
 
 export default {
   input: `src/${libraryName}.ts`,

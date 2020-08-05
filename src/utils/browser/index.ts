@@ -116,7 +116,7 @@ export function requestPost(id: string, url: string, data: object) {
     xhr.setRequestHeader('project_id', id)
     xhr.setRequestHeader('type', 'js')
     xhr.onreadystatechange = function() {
-      if (xhr.readyState == 4 && xhr.status == 200) {
+      if (xhr.readyState === 4 && xhr.status === 200) {
         resolve(xhr.response)
       } else {
         reject(xhr.responseText)
