@@ -5,15 +5,13 @@ import {
   OSType,
   TRACK_TYPE,
   JSOptions,
-  Constants
+  Constants,
+  version
 } from '../types'
-// import { version } from '../../package.json'
-import { getOsInfo, generateUUID } from '../utils/browser/index'
-const pkg = require('../../package.json')
-const version = pkg.version
+import { getOsInfo, generateUUID, requestPost } from '../utils/browser/index'
 
 export default class JueXiaoBrowserStatSDK {
-  private sdkVersion: string = version || ''
+  private sdkVersion: string = version
   private sdkType: LibrayType = Constants.LIBRARY_JS
   /** 项目唯一标识 */
   private projectId = ''
@@ -53,7 +51,9 @@ export default class JueXiaoBrowserStatSDK {
     this.trackData.type = trackType
     this.trackData.time = new Date().getTime()
     if (data) this.trackData.properties = data
-    // todo api
+    requestPost(this.projectId, Constants.FETCH_URL, this.trackData).then(res => {
+      console.info(res)
+    })
   }
 
   track(eventName: string, data = {}) {

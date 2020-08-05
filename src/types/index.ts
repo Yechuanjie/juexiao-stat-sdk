@@ -72,3 +72,5 @@ export enum Constants {
   LIBRARY_JS = 'js',
   LIBRARY_MINI = 'miniprogram'
 }
+
+export const version = '__VERSION__'

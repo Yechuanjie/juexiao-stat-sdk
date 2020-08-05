@@ -1,4 +1,5 @@
 import { LibrayType } from '../../types'
+import { resolve } from 'dns'
 
 /**
  * 获取操作系统 和 浏览器 信息
@@ -98,6 +99,32 @@ export function generateUUID(sdkType: LibrayType = 'js'): string {
   return `${sdkType}_${uuid}`
 }
 
-export function http() {
-  console.info('http')
+/**
+ * post请求
+ *
+ * @export
+ * @param {string} id
+ * @param {string} url
+ * @param {object} data
+ * @returns
+ */
+export function requestPost(id: string, url: string, data: object) {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest()
+    xhr.open('post', url)
+    xhr.setRequestHeader('Content-Type', 'application/json')
+    xhr.setRequestHeader('project_id', id)
+    xhr.setRequestHeader('type', 'js')
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState == 4 && xhr.status == 200) {
+        resolve(xhr.response)
+      } else {
+        reject(xhr.responseText)
+      }
+    }
+    const stringfyData = {
+      data: [data]
+    }
+    xhr.send(JSON.stringify(stringfyData))
+  })
 }
