@@ -47,7 +47,7 @@ export default class JueXiaoBrowserStatSDK {
     return uuid
   }
 
-  protected _trackEvent(trackType: TRACK_TYPE = 'track', data?: PresetProperties): Promise<any> {
+  protected async _trackEvent(trackType: TRACK_TYPE = 'track', data?: PresetProperties) {
     this.trackData.type = trackType
     this.trackData.time = new Date().getTime()
     if (data) this.trackData.properties = data
