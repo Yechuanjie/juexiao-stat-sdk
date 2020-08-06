@@ -2,7 +2,6 @@ import {
   PresetProperties,
   UserEvent,
   LibrayType,
-  OSType,
   TRACK_TYPE,
   InitOption,
   Constants,
