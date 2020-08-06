@@ -4,11 +4,12 @@ import {
   LibrayType,
   OSType,
   TRACK_TYPE,
-  JSOptions,
+  InitOption,
   Constants,
   version
 } from '../types'
-import { getOsInfo, generateUUID, requestPost } from '../utils/browser/index'
+import { getOsInfo, requestPost, sendDataWithImg } from '../utils/browser'
+import { generateUUID } from '../utils'
 
 export default class JueXiaoBrowserStatSDK {
   private sdkVersion: string = version
@@ -18,16 +19,16 @@ export default class JueXiaoBrowserStatSDK {
   private trackData = {} as UserEvent
   /**
    * Creates an instance of JueXiaoBrowserStatSDK.
-   * @param {JSOptions} options
+   * @param {InitOption} options
    * @memberof JueXiaoBrowserStatSDK
    */
-  constructor(options: JSOptions) {
+  constructor(options: InitOption) {
     this.projectId = options.id
     this.init()
   }
   private init() {
     this.trackData.distinct_id = this.initUserId()
-    this.trackData.$is_login = false
+    this.trackData.is_login = false
     this.trackData.properties = this.registerPresetProperties()
     console.info('USER_EVENT_MODAL', this.trackData)
   }
@@ -47,17 +48,11 @@ export default class JueXiaoBrowserStatSDK {
     return uuid
   }
 
-  protected _trackEvent(trackType: TRACK_TYPE = 'track', data?: PresetProperties): Promise<void> {
+  private _trackEvent(trackType: TRACK_TYPE = 'track', data?: PresetProperties) {
     this.trackData.type = trackType
     this.trackData.time = new Date().getTime()
     if (data) this.trackData.properties = data
-    return requestPost(this.projectId, Constants.FETCH_URL, this.trackData)
-      .then(res => {
-        console.info('数据上报成功', res)
-      })
-      .catch(err => {
-        console.info('数据上报失败', err)
-      })
+    sendDataWithImg(this.projectId, Constants.FETCH_IMAGE_URL, this.trackData)
   }
 
   track(eventName: string, data = {}) {
@@ -95,28 +90,28 @@ export default class JueXiaoBrowserStatSDK {
   private registerPresetProperties(): PresetProperties {
     const preset = {} as PresetProperties
     const osInfo = getOsInfo()
-    preset.$lib = this.sdkType
-    preset.$lib_version = this.sdkVersion
-    // preset.$network_type = navigator['connection'].effectiveType
+    preset.jx_lib = this.sdkType
+    preset.jx_lib_version = this.sdkVersion
+    // preset.jx_network_type = navigator['connection'].effectiveType
     if (navigator['connection']) {
-      preset.$network_type = navigator['connection'].effectiveType
+      preset.jx_network_type = navigator['connection'].effectiveType
     } else {
-      preset.$network_type = '4G'
+      preset.jx_network_type = '4g'
     }
-    preset.$screen_height = window.innerHeight
-    preset.$screen_width = window.innerWidth
-    preset.$os = osInfo.os as OSType
-    preset.$os_version = osInfo.osVersion
+    preset.jx_screen_height = window.innerHeight
+    preset.jx_screen_width = window.innerWidth
+    preset.jx_os = osInfo.os as OSType
+    preset.jx_os_version = osInfo.osVersion
 
     if (!osInfo.isMobile) {
-      preset.$browser = osInfo.browser
-      preset.$browser_version = osInfo.browserVersion
+      preset.jx_browser = osInfo.browser
+      preset.jx_browser_version = osInfo.browserVersion
     }
     // 下面四个属性，在 web/h5 端无法获取，默认不需要
-    // preset.$brand = ''
-    // preset.$manufacturer = ''
-    // preset.$device_id = ''
-    // preset.$device_mode = ''
+    // preset.jx_brand = ''
+    // preset.jx_manufacturer = ''
+    // preset.jx_device_id = ''
+    // preset.jx_device_mode = ''
     console.info(`sdk-version: ${this.sdkVersion}`)
     return preset
   }
@@ -140,7 +135,7 @@ export default class JueXiaoBrowserStatSDK {
    */
   login(loginId: string): void {
     if (loginId) {
-      this.trackData.$is_login = true
+      this.trackData.is_login = true
       this.trackData.distinct_id = loginId
     } else {
       throw new Error('please make sure the login id is correct!')

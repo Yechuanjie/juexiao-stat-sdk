@@ -1,6 +1,4 @@
-import { LibrayType } from '../../types'
-import { resolve } from 'dns'
-
+import { Constants } from '../types'
 /**
  * 获取操作系统 和 浏览器 信息
  *
@@ -83,23 +81,6 @@ export function getOsInfo() {
 }
 
 /**
- * 生成UUID
- *
- * @export
- * @param {LibrayType} [sdkType='js']
- * @returns {string}
- */
-export function generateUUID(sdkType: LibrayType = 'js'): string {
-  let d = new Date().getTime()
-  let uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-    let r = (d + Math.random() * 16) % 16 | 0
-    d = Math.floor(d / 16)
-    return (c === 'x' ? r : (r & 0x3) | 0x8).toString(16)
-  })
-  return `${sdkType}_${uuid}`
-}
-
-/**
  * post请求
  *
  * @export
@@ -121,6 +102,7 @@ export function requestPost(
     xhr.setRequestHeader('Content-Type', 'application/json')
     xhr.setRequestHeader('project_id', id)
     xhr.setRequestHeader('type', 'js')
+    xhr.withCredentials = true
     xhr.onreadystatechange = function() {
       if (xhr.readyState === 4 && xhr.status === 200) {
         resolve(xhr.response)
@@ -133,4 +115,25 @@ export function requestPost(
     }
     xhr.send(JSON.stringify(stringfyData))
   })
+}
+/**
+ * 使用图片的请求方式
+ *
+ * @export
+ * @param {string} id
+ * @param {string} url
+ * @param {object} data
+ */
+export function sendDataWithImg(id: string, url: string, data: object) {
+  let img: any = new Image()
+  const key = 'img_log_' + Math.floor(Math.random() * 2147483648).toString(36) // 为本次数据请求创建一个唯一id
+  window[key] = img
+  img.onload = img.onerror = img.onabort = () => {
+    img.onload = img.onerror = img.onabort = null // 清除img元素
+    window[key] = null
+    img = null
+  }
+  img.src = `${url}?data=${encodeURIComponent(JSON.stringify(data))}&project_id=${id}&type=${
+    Constants.LIBRARY_JS
+  }`
 }

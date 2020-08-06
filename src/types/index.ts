@@ -10,14 +10,14 @@ export interface UserEvent {
   /** 事件名称，在明确上报信息是用户信息的时候没有这个字段 */
   event?: string
   /** 是否登录 */
-  $is_login: boolean
+  is_login: boolean
   /** 事件属性，基于这条上报事件的属性，包含预置属性和自定义属性 */
   properties: PresetProperties
 }
-export type OSType = 'Android' | 'IOS' | 'Windows' | 'Mac'
-export type NetworkType = 'wifi' | '2G' | '3G' | '4G' | '5G'
-export type LibrayType = 'js' | 'miniprogram'
-export type JSOptions = {
+export type OSType = 'Android' | 'IOS' | 'Windows' | 'Mac' | string
+export type NetworkType = 'wifi' | '2g' | '3g' | '4g' | '5g' | 'unknown' | 'none'
+export type LibrayType = 'js' | 'wechat'
+export type InitOption = {
   id: string
 }
 
@@ -28,32 +28,32 @@ export type JSOptions = {
  */
 export type PresetProperties = {
   /** 操作系统 */
-  $os: OSType
+  jx_os: OSType
   /** 操作系统版本 */
-  $os_version: string
+  jx_os_version: string
   /** 屏幕高度 */
-  $screen_height: number
+  jx_screen_height: number
   /** 屏幕宽度 */
-  $screen_width: number
+  jx_screen_width: number
   /** 网络类型 */
-  $network_type: NetworkType
+  jx_network_type: NetworkType
   /** SDK类型 */
-  $lib: LibrayType
+  jx_lib: LibrayType
   /** SDK版本 */
-  $lib_version: string
+  jx_lib_version: string
 
   /** 设备品牌 */
-  $brand?: string
+  jx_brand?: string
   /** 设备制造商 */
-  $manufacturer?: string
+  jx_manufacturer?: string
   /** 设备ID,IOS取用户的IDFA或UUID，安卓取AndroidID */
-  $device_id?: string
+  jx_device_id?: string
   /** 设备型号 */
-  $device_mode?: string
+  jx_device_mode?: string
   /** 浏览器名称 */
-  $browser?: string
+  jx_browser?: string
   /** 浏览器版本 */
-  $browser_version?: string
+  jx_browser_version?: string
   /** 其他自定义属性 */
   [propName: string]: any
 }
@@ -68,9 +68,10 @@ export type TRACK_TYPE = 'track' | 'trackSignUp' | 'profileSet' | 'profileSetOnc
 
 export enum Constants {
   FETCH_URL = 'https://sdk.juexiaotime.com/sdk_js',
+  FETCH_IMAGE_URL = 'https://sdk.juexiaotime.com/sdk_js.gif',
   JUEXIAO_STAT_UUID = 'JUEXIAO_STAT_UUID',
   LIBRARY_JS = 'js',
-  LIBRARY_MINI = 'miniprogram'
+  LIBRARY_MINI = 'wechat'
 }
 
 export const version = '__VERSION__'
