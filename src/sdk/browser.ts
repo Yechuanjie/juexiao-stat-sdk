@@ -47,15 +47,17 @@ export default class JueXiaoBrowserStatSDK {
     return uuid
   }
 
-  protected _trackEvent(trackType: TRACK_TYPE = 'track', data?: PresetProperties) {
+  protected _trackEvent(trackType: TRACK_TYPE = 'track', data?: PresetProperties): Promise<any> {
     this.trackData.type = trackType
     this.trackData.time = new Date().getTime()
     if (data) this.trackData.properties = data
-    try {
-      requestPost(this.projectId, Constants.FETCH_URL, this.trackData).then(res => {
-        console.info(res)
+    return requestPost(this.projectId, Constants.FETCH_URL, this.trackData)
+      .then(res => {
+        console.info('数据上报成功', res)
       })
-    } catch (error) {}
+      .catch(err => {
+        console.info('数据上报失败', err)
+      })
   }
 
   track(eventName: string, data = {}) {

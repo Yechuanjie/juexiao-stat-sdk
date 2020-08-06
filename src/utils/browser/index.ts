@@ -108,7 +108,13 @@ export function generateUUID(sdkType: LibrayType = 'js'): string {
  * @param {object} data
  * @returns
  */
-export function requestPost(id: string, url: string, data: object) {
+export function requestPost(
+  id: string,
+  url: string,
+  data: object
+): Promise<{
+  code: number
+}> {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest()
     xhr.open('post', url)
