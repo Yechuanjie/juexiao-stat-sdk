@@ -100,7 +100,7 @@ export default class JueXiaoBrowserStatSDK {
     }
     preset.jx_screen_height = window.innerHeight
     preset.jx_screen_width = window.innerWidth
-    preset.jx_os = osInfo.os as OSType
+    preset.jx_os = osInfo.os
     preset.jx_os_version = osInfo.osVersion
 
     if (!osInfo.isMobile) {

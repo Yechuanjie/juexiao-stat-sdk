@@ -8,7 +8,7 @@ import { OSType, Constants } from '../types'
  * @returns
  */
 export function formatSystem(system: string): OSType {
-  var _system = system.toLowerCase()
+  const _system = system.toLowerCase()
   if (_system === 'ios') {
     return 'IOS'
   } else if (_system === 'android') {

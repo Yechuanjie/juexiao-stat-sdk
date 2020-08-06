@@ -138,35 +138,7 @@ export default class JueXiaoMiniStatSDK {
    * 上传opendid
    *
    * 为了提高数据的准确性，小程序需要在运行时从服务端获取 openid，并主动调用 sdk 提供的 setOpenid 方法。
-   *
    * 在 app.js 文件 onLaunch 周期中调用 stat.sendOpenid() 方法上传从后端获取的 OpenID。
-   * ```js
-   * import { MiniStatSDK } from 'juexiao-stat-sdk'
-   * const stat = new MiniStatSDK({
-   *   id: 'test' // 项目唯一标识id
-   * })
-   * App({
-   * onLaunch(options){
-   * // 从自己的服务端 获取openid
-   *  wx.login({
-   *    success : function(res){
-   *      wx.request({
-   *        url : "",
-   *        data : {
-   *          jscode : res.code
-   *       },
-   *        success : function(res){
-   *         //.....
-   *         //调用上传OpenID
-   *         stat.setOpenid("在此处填写当前小程序用户的OpenID")
-   *        }
-   *      })
-   *    }
-   *  })
-   * }
-   *})
-   *
-   *```
    *
    * @param {string} openid
    * @memberof JueXiaoMiniStatSDK
