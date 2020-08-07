@@ -106,11 +106,6 @@ export default class JueXiaoBrowserStatSDK {
       preset.jx_browser = osInfo.browser
       preset.jx_browser_version = osInfo.browserVersion
     }
-    // 下面四个属性，在 web/h5 端无法获取，默认不需要
-    // preset.jx_brand = ''
-    // preset.jx_manufacturer = ''
-    // preset.jx_device_id = ''
-    // preset.jx_device_mode = ''
     console.info(`sdk-version: ${this.sdkVersion}`)
     return preset
   }
