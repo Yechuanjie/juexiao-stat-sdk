@@ -72,7 +72,6 @@ export function getOsInfo() {
   }
   return obj
 }
-
 /**
  * post请求
  *

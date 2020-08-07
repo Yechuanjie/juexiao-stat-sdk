@@ -5,7 +5,6 @@
  * Author: Yechuanjie
  * Copyright (c) Juexiao Time. All rights reserved.
  */
-
 import MiniStatSDK from './sdk/miniprogram'
 import BrowserStatSDK from './sdk/browser'
 export { MiniStatSDK, BrowserStatSDK }
