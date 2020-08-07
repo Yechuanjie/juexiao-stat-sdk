@@ -3,20 +3,20 @@
 ### 安装
 
 ```shell
-// use npm
 npm install juexiao-stat-sdk
+```
 
-// use yarn
+or
+
+```shell
 yarn add juexiao-stat-sdk
 ```
 
-注意：`sdk` 只支持 `web/h5` 和  `微信小程序` 环境使用，两种环境完全独立。该 `sdk `以 `umd` 格式打包，同时支持  `import ` 和 `require` 导入，推荐使用 `es6` 的 `import` 语法按需引入不同环境对应的模块。
+注意：该 `sdk` 只支持 **web/h5**  和 **微信小程序** 环境使用，两种环境完全独立。该 `sdk `以 `umd` 格式打包，同时支持  `import ` 和 `require` 导入，推荐使用 `es6` 的 `import` 语法按需引入不同环境对应的模块。
 
-`sdk` 包含两个模块： `BrowserStatSDK `和  `MiniStatSDK`， 其中，`BrowserStatSDK `只适用于 `web/h5` 环境，`MiniStatSDK` 只适用于微信小程序环境。使用时请注意区分
+`sdk` 包含两个模块： `BrowserStatSDK `和  `MiniStatSDK`， 其中，`BrowserStatSDK `只适用于 `web/h5` 环境，`MiniStatSDK` 只适用于微信小程序环境，使用时请注意区分。
 
-### 在项目中使用
-
-以  `Vue` 项目为例：
+#### 在 vue 项目中使用：
 
 `main.js` 中引入
 
@@ -45,9 +45,15 @@ methods: {
 }
 ```
 
-以微信小程序为例：
+#### 在微信小程序中使用：
 
-在入口文件 app.js 中引入，
+登录[微信公众平台](http://mp.weixin.qq.com/)(mp.weixin.qq.com)，在 **开发→开发设置->服务器域名** 找到「 **request 合法域名**」，点击「修改」，将 `sdk.juexiaotime.com` 添加 **request 合法域名**中。
+
+```javascript
+sdk.juexiaotime.com
+```
+
+在入口文件 `app.js` 中引入，
 
 ```javascript
 import { MiniStatSDK } from 'juexiao-stat-sdk'
@@ -74,17 +80,23 @@ methods: {
 
 ### **API**
 
+##### login
+
 为了保证数据准确性，当用户 **登录** 成功后，必须调用 `login` 方法，主动更新用户 `id`
 
 ```javascript
 stat.login('loginid')
 ```
 
+##### trackSignUp
+
 为了保证数据准确性，当用户 **注册** 成功后，必须调用 `trackSignUp` 方法，用于绑定登录  `id`和匿名 `id` 之间的操作
 
 ```javascript
-stat.trackSignUp(&#39;loginid&#39;)
+stat.trackSignUp('loginid')
 ```
+
+##### track
 
 常规数据上报
 
@@ -93,6 +105,8 @@ stat.track('eventname', {
     // 当前事件需要的一些自定义属性
 })
 ```
+
+##### profileSet
 
 用户可以主动设置预置属性，已存在的字段则覆盖，不存在则自动创建
 
@@ -103,16 +117,20 @@ stat.profileSet({
 })
 ```
 
+##### profileSetOnce
+
 用户可以主动设置预置属性，与 `profileSet `不同的是，如果被设置的用户属性已存在，则这条记录会被忽略，如果属性不存在则会自动创建
 
 ```javascript
 stat.profileSetOnce({
-    sex: &#39;男&#39;
-    age: &#39;18&#39;
+    sex: '男'
+    age: '18'
 })
 ```
 
 ### 差异API
+
+##### setOpenid
 
 微信小程序中，默认情况下使用 `UUID` 作为用户标识，但删除小程序的操作，会导致UUID改变，因此，为了数据的准确性，建议获取并使用 `openid`。
 
