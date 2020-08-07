@@ -41,7 +41,6 @@ export type PresetProperties = {
   jx_lib: LibrayType
   /** SDK版本 */
   jx_lib_version: string
-
   /** 设备品牌 */
   jx_brand?: string
   /** 设备制造商 */
