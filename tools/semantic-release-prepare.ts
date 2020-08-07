@@ -5,13 +5,8 @@ const colors = require('colors')
 const { readFileSync, writeFileSync } = require('fs')
 const pkg = JSON.parse(readFileSync(path.resolve(__dirname, '..', 'package.json')))
 
-console.log(colors.red('运行prepare: 当前package version: ' + pkg.version))
-
-pkg.version = '0.0.0-dev'
 pkg.scripts.prepush = 'npm run test:prod && npm run build'
 pkg.scripts.commitmsg = 'commitlint -E HUSKY_GIT_PARAMS'
-
-console.log(colors.red('运行prepare: 修改package version: ' + pkg.version))
 
 writeFileSync(path.resolve(__dirname, '..', 'package.json'), JSON.stringify(pkg, null, 2))
 
