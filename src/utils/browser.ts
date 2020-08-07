@@ -70,13 +70,6 @@ export function getOsInfo() {
     browser,
     browserVersion
   }
-  // // 移除为空的属性
-  // const props = Object.assign({}, obj)
-  // Object.keys(props).forEach(key => {
-  //   if (props[key] === '') {
-  //     delete obj[key]
-  //   }
-  // })
   return obj
 }
 

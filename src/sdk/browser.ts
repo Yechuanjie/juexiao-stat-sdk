@@ -7,7 +7,7 @@ import {
   Constants,
   version
 } from '../types'
-import { getOsInfo, requestPost, sendDataWithImg } from '../utils/browser'
+import { getOsInfo, sendDataWithImg } from '../utils/browser'
 import { generateUUID } from '../utils'
 
 export default class JueXiaoBrowserStatSDK {
