@@ -50,9 +50,18 @@ export default class JueXiaoMiniStatSDK {
   private _trackEvent(trackType: TRACK_TYPE = 'track', data?: PresetProperties) {
     this.trackData.type = trackType
     this.trackData.time = new Date().getTime()
-    if (data) this.trackData.properties = data
-    // todo api
-    sendData(this.projectId, Constants.FETCH_URL, this.trackData)
+    if (trackType === 'profileSet' || trackType === 'profileSetOnce') {
+      if (data) {
+        this.trackData.properties = data
+      }
+      sendData(this.projectId, Constants.FETCH_IMAGE_URL, this.trackData)
+    } else {
+      let nowTrackData = Object.assign({}, this.trackData)
+      if (data) {
+        nowTrackData.properties = data
+      }
+      sendData(this.projectId, Constants.FETCH_IMAGE_URL, nowTrackData)
+    }
   }
 
   track(eventName: string, data = {}) {
@@ -126,7 +135,7 @@ export default class JueXiaoMiniStatSDK {
   login(loginId: string): void {
     if (loginId) {
       this.trackData.is_login = true
-      this.trackData.distinct_id = loginId
+      this.trackData.distinct_id = String(loginId)
     } else {
       throw new Error('please make sure the login id is correct!')
     }
@@ -144,7 +153,7 @@ export default class JueXiaoMiniStatSDK {
     // 传入openid 且 当前没有登录时才设置openid
     // 已登录用户无需再设置 openid
     if (openid && !this.trackData.is_login) {
-      this.trackData.distinct_id = openid
+      this.trackData.distinct_id = String(openid)
       // 把本地的uuid替换为openid
       wx.setStorageSync(Constants.JUEXIAO_STAT_UUID, openid)
     }

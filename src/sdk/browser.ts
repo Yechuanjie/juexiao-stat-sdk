@@ -50,8 +50,18 @@ export default class JueXiaoBrowserStatSDK {
   private _trackEvent(trackType: TRACK_TYPE = 'track', data?: PresetProperties) {
     this.trackData.type = trackType
     this.trackData.time = new Date().getTime()
-    if (data) this.trackData.properties = data
-    sendDataWithImg(this.projectId, Constants.FETCH_IMAGE_URL, this.trackData)
+    if (trackType === 'profileSet' || trackType === 'profileSetOnce') {
+      if (data) {
+        this.trackData.properties = data
+      }
+      sendDataWithImg(this.projectId, Constants.FETCH_IMAGE_URL, this.trackData)
+    } else {
+      let nowTrackData = Object.assign({}, this.trackData)
+      if (data) {
+        nowTrackData.properties = data
+      }
+      sendDataWithImg(this.projectId, Constants.FETCH_IMAGE_URL, nowTrackData)
+    }
   }
 
   track(eventName: string, data = {}) {
@@ -129,7 +139,7 @@ export default class JueXiaoBrowserStatSDK {
   login(loginId: string): void {
     if (loginId) {
       this.trackData.is_login = true
-      this.trackData.distinct_id = loginId
+      this.trackData.distinct_id = String(loginId)
     } else {
       throw new Error('please make sure the login id is correct!')
     }
