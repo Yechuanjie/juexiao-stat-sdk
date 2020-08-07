@@ -91,10 +91,8 @@ export default class JueXiaoMiniStatSDK {
     const preset = {} as PresetProperties
     preset.jx_lib = this.sdkType
     preset.jx_lib_version = this.sdkVersion
-
     const network = await wx.getNetworkType()
     preset.jx_network_type = network.networkType
-
     const sys = wx.getSystemInfoSync()
     preset.jx_manufacturer = sys['brand']
     preset.jx_device_mode = sys['model']
