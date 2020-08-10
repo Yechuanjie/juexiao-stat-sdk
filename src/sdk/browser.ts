@@ -105,7 +105,7 @@ export default class JueXiaoBrowserStatSDK {
     if (navigator['connection']) {
       preset.jx_network_type = navigator['connection'].effectiveType
     } else {
-      preset.jx_network_type = '4g'
+      preset.jx_network_type = 'unknown'
     }
     preset.jx_screen_height = window.innerHeight
     preset.jx_screen_width = window.innerWidth
