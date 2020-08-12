@@ -88,6 +88,14 @@ methods: {
 stat.login('loginid')
 ```
 
+##### logout
+
+为了保证数据准确性，当用户 **退出登录** 成功后，必须调用 `logout` 方法，主动更新用户登录状态
+
+```javascript
+stat.logout()
+```
+
 ##### trackSignUp
 
 为了保证数据准确性，当用户 **注册** 成功后，必须调用 `trackSignUp` 方法，用于绑定登录  `id`和匿名 `id` 之间的操作
