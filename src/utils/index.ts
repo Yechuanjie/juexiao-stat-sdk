@@ -24,6 +24,11 @@ export function generateUUID(sdkType: LibrayType = 'js'): string {
  * @returns {boolean} 是否通过校验
  */
 export function checkPropertyKey(data: object): boolean {
+  // 非对象直接抛出错误
+  if (Object.prototype.toString.call(data) === '[object Object]') {
+    console.warn(`请检查自定义属性是否为 object 类型`)
+    return false
+  }
   const reg = /^([a-zA-Z][a-zA-Z_0-9]{0,49}$)/
   let isPass = true
   Object.keys(data).forEach(key => {

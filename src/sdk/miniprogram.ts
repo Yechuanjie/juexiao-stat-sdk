@@ -124,10 +124,11 @@ export default class JueXiaoMiniStatSDK {
     if (!loginId) {
       throw new Error('please make sure the login id is correct!')
     }
-    // 调用 login() 更新用户id
-    this.login(loginId)
-    // 上报
+    this.trackData.properties.anonymous_id = this.initUserId()
+    this.trackData.properties.register_id = loginId
     this._trackEvent('trackSignUp')
+    delete this.trackData.properties['anonymous_id']
+    delete this.trackData.properties['register_id']
   }
   /**
    * 用户登录 - 用于更新用户id

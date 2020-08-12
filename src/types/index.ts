@@ -53,6 +53,10 @@ export type PresetProperties = {
   jx_browser?: string
   /** 浏览器版本 */
   jx_browser_version?: string
+  /** 注册成功前使用的distinct_id */
+  anonymous_id?: string
+  /** 注册成功后获得的user id */
+  register_id?: string
   /** 其他自定义属性 */
   [propName: string]: any
 }

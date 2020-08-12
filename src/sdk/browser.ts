@@ -79,7 +79,7 @@ export default class JueXiaoBrowserStatSDK {
    * @memberof JueXiaoBrowserStatSDK
    */
   profileSet(options: object = {}) {
-    const data = Object.assign({}, this.trackData.properties, options)
+    const data = Object.assign({}, options, this.trackData.properties)
     this._trackEvent('profileSet', data)
   }
   /**
@@ -104,7 +104,6 @@ export default class JueXiaoBrowserStatSDK {
     const osInfo = getOsInfo()
     preset.jx_lib = this.sdkType
     preset.jx_lib_version = this.sdkVersion
-    // preset.jx_network_type = navigator['connection'].effectiveType
     if (navigator['connection']) {
       preset.jx_network_type = navigator['connection'].effectiveType
     } else {
@@ -131,10 +130,11 @@ export default class JueXiaoBrowserStatSDK {
     if (!loginId) {
       throw new Error('please make sure the login id is correct!')
     }
-    // 调用 login() 更新用户id
-    this.login(loginId)
-    // 上报
+    this.trackData.properties.anonymous_id = this.initUserId()
+    this.trackData.properties.register_id = loginId
     this._trackEvent('trackSignUp')
+    delete this.trackData.properties['anonymous_id']
+    delete this.trackData.properties['register_id']
   }
   /**
    * 用户登录 - 用于更新用户id
