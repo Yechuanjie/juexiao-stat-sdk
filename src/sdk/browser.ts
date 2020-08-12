@@ -50,6 +50,9 @@ export default class JueXiaoBrowserStatSDK {
   private _trackEvent(trackType: TRACK_TYPE = 'track', data?: PresetProperties) {
     this.trackData.type = trackType
     this.trackData.time = new Date().getTime()
+    if (trackType !== 'track') {
+      delete this.trackData['event']
+    }
     if (trackType === 'profileSet' || trackType === 'profileSetOnce') {
       if (data) {
         this.trackData.properties = data
