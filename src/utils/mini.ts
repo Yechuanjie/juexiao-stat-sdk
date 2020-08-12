@@ -1,4 +1,4 @@
-import { OSType, Constants } from '../types'
+import { OSType, Constants, UserEvent } from '../types'
 import { checkPropertyKey } from './index'
 
 /**
@@ -25,10 +25,10 @@ export function formatSystem(system: string): OSType {
  * @export
  * @param {string} id
  * @param {string} url
- * @param {object} data
+ * @param {UserEvent} data
  */
-export function sendData(id: string, url: string, data: object) {
-  if (checkPropertyKey(data)) {
+export function sendData(id: string, url: string, data: UserEvent) {
+  if (checkPropertyKey(data.properties)) {
     const URL = `${url}?data=${encodeURIComponent(JSON.stringify(data))}&project_id=${id}&type=${
       Constants.LIBRARY_MINI
     }`

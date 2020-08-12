@@ -1,4 +1,4 @@
-import { Constants } from '../types'
+import { Constants, UserEvent } from '../types'
 import { checkPropertyKey } from './index'
 /**
  * 获取操作系统 和 浏览器 信息
@@ -115,10 +115,10 @@ export function requestPost(
  * @export
  * @param {string} id
  * @param {string} url
- * @param {object} data
+ * @param {UserEvent} data
  */
-export function sendDataWithImg(id: string, url: string, data: object) {
-  if (checkPropertyKey(data)) {
+export function sendDataWithImg(id: string, url: string, data: UserEvent) {
+  if (checkPropertyKey(data.properties)) {
     let img: any = new Image()
     const key = 'img_log_' + Math.floor(Math.random() * 2147483648).toString(36) // 为本次数据请求创建一个唯一id
     window[key] = img
