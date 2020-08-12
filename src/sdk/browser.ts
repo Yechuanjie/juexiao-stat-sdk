@@ -125,6 +125,9 @@ export default class JueXiaoBrowserStatSDK {
    * @memberof JueXiaoBrowserStatSDK
    */
   trackSignUp(loginId: string): void {
+    if (!loginId) {
+      throw new Error('please make sure the login id is correct!')
+    }
     // 调用 login() 更新用户id
     this.login(loginId)
     // 上报
@@ -143,5 +146,14 @@ export default class JueXiaoBrowserStatSDK {
     } else {
       throw new Error('please make sure the login id is correct!')
     }
+  }
+  /**
+   * 退出登录
+   *
+   * @memberof JueXiaoBrowserStatSDK
+   */
+  logout(): void {
+    this.trackData.is_login = false
+    this.trackData.distinct_id = this.initUserId()
   }
 }

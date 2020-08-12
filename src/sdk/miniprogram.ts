@@ -17,9 +17,9 @@ export default class JueXiaoMiniStatSDK {
   private projectId = ''
   private trackData = {} as UserEvent
   /**
-   * Creates an instance of JueXiaoBrowserStatSDK.
+   * Creates an instance of JueXiaoMiniStatSDK.
    * @param {InitOption} options
-   * @memberof JueXiaoBrowserStatSDK
+   * @memberof JueXiaoMiniStatSDK
    */
   constructor(options: InitOption) {
     this.projectId = options.id
@@ -36,7 +36,7 @@ export default class JueXiaoMiniStatSDK {
    *
    * @private
    * @returns {string}
-   * @memberof JueXiaoBrowserStatSDK
+   * @memberof JueXiaoMiniStatSDK
    */
   private initUserId(): string {
     let uuid = wx.getStorageSync(Constants.JUEXIAO_STAT_UUID)
@@ -73,7 +73,7 @@ export default class JueXiaoMiniStatSDK {
    * 设置预置属性 已存在的字段则覆盖，不存在则自动创建
    *
    * @param {*} [options={}]
-   * @memberof JueXiaoBrowserStatSDK
+   * @memberof JueXiaoMiniStatSDK
    */
   profileSet(options: object = {}) {
     const data = Object.assign({}, this.trackData.properties, options)
@@ -83,7 +83,7 @@ export default class JueXiaoMiniStatSDK {
    * 设置用户首次属性，与 profileSet 不同的是，如果被设置的用户属性已存在，则这条记录会被忽略，如果属性不存在则会自动创建
    *
    * @param {object} options
-   * @memberof JueXiaoBrowserStatSDK
+   * @memberof JueXiaoMiniStatSDK
    */
   profileSetOnce(options: object = {}) {
     const data = Object.assign({}, options, this.trackData.properties)
@@ -94,7 +94,7 @@ export default class JueXiaoMiniStatSDK {
    *
    * @private
    * @param {Object} params
-   * @memberof JueXiaoBrowserStatSDK
+   * @memberof JueXiaoMiniStatSDK
    */
   private async registerPresetProperties(): Promise<PresetProperties> {
     const preset = {} as PresetProperties
@@ -118,9 +118,12 @@ export default class JueXiaoMiniStatSDK {
    * 用户注册-用于绑定登录id和匿名id之间的操作
    *
    * @param {string} loginId 用户注册成功后返回的userid
-   * @memberof JueXiaoBrowserStatSDK
+   * @memberof JueXiaoMiniStatSDK
    */
   trackSignUp(loginId: string): void {
+    if (!loginId) {
+      throw new Error('please make sure the login id is correct!')
+    }
     // 调用 login() 更新用户id
     this.login(loginId)
     // 上报
@@ -130,7 +133,7 @@ export default class JueXiaoMiniStatSDK {
    * 用户登录 - 用于更新用户id
    *
    * @param {string}
-   * @memberof JueXiaoBrowserStatSDK
+   * @memberof JueXiaoMiniStatSDK
    */
   login(loginId: string): void {
     if (loginId) {
@@ -139,6 +142,15 @@ export default class JueXiaoMiniStatSDK {
     } else {
       throw new Error('please make sure the login id is correct!')
     }
+  }
+  /**
+   * 退出登录
+   *
+   * @memberof JueXiaoMiniStatSDK
+   */
+  logout(): void {
+    this.trackData.is_login = false
+    this.trackData.distinct_id = this.initUserId()
   }
   /**
    * 上传opendid
