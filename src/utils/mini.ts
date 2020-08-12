@@ -1,4 +1,5 @@
 import { OSType, Constants } from '../types'
+import { checkPropertyKey } from './index'
 
 /**
  * 格式化操作系统
@@ -27,11 +28,13 @@ export function formatSystem(system: string): OSType {
  * @param {object} data
  */
 export function sendData(id: string, url: string, data: object) {
-  const URL = `${url}?data=${encodeURIComponent(JSON.stringify(data))}&project_id=${id}&type=${
-    Constants.LIBRARY_MINI
-  }`
-  wx.request({
-    url: URL,
-    method: 'GET'
-  })
+  if (checkPropertyKey(data)) {
+    const URL = `${url}?data=${encodeURIComponent(JSON.stringify(data))}&project_id=${id}&type=${
+      Constants.LIBRARY_MINI
+    }`
+    wx.request({
+      url: URL,
+      method: 'GET'
+    })
+  }
 }

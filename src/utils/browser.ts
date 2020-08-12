@@ -1,4 +1,5 @@
 import { Constants } from '../types'
+import { checkPropertyKey } from './index'
 /**
  * 获取操作系统 和 浏览器 信息
  *
@@ -117,15 +118,17 @@ export function requestPost(
  * @param {object} data
  */
 export function sendDataWithImg(id: string, url: string, data: object) {
-  let img: any = new Image()
-  const key = 'img_log_' + Math.floor(Math.random() * 2147483648).toString(36) // 为本次数据请求创建一个唯一id
-  window[key] = img
-  img.onload = img.onerror = img.onabort = () => {
-    img.onload = img.onerror = img.onabort = null // 清除img元素
-    window[key] = null
-    img = null
+  if (checkPropertyKey(data)) {
+    let img: any = new Image()
+    const key = 'img_log_' + Math.floor(Math.random() * 2147483648).toString(36) // 为本次数据请求创建一个唯一id
+    window[key] = img
+    img.onload = img.onerror = img.onabort = () => {
+      img.onload = img.onerror = img.onabort = null // 清除img元素
+      window[key] = null
+      img = null
+    }
+    img.src = `${url}?data=${encodeURIComponent(JSON.stringify(data))}&project_id=${id}&type=${
+      Constants.LIBRARY_JS
+    }`
   }
-  img.src = `${url}?data=${encodeURIComponent(JSON.stringify(data))}&project_id=${id}&type=${
-    Constants.LIBRARY_JS
-  }`
 }

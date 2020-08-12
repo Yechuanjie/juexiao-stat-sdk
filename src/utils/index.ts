@@ -15,3 +15,24 @@ export function generateUUID(sdkType: LibrayType = 'js'): string {
   })
   return `${sdkType}_${uuid}`
 }
+
+/**
+ * 校验数据格式是否正确
+ *
+ * @export
+ * @param {object} data
+ * @returns {boolean} 是否通过校验
+ */
+export function checkPropertyKey(data: object): boolean {
+  const reg = /^([a-zA-Z][a-zA-Z_0-9]{0,49}$)/
+  let isPass = true
+  Object.keys(data).forEach(key => {
+    if (!reg.test(key)) {
+      isPass = false
+      throw new Error(
+        `数据格式校验失败，属性 ${key} 不符合规则：以字母开头，可包含字母、数值、下划线，且长度不超过50`
+      )
+    }
+  })
+  return isPass
+}
