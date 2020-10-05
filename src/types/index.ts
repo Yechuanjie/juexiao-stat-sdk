@@ -1,8 +1,11 @@
 export interface CustomProperties<T> {}
 
 export interface UserEvent {
-  /** 用户唯一id，在用户没用登录的时候，移动端使用用户唯一设备id代替，web端使用UUID代替，微信端建议使用open_id代替，用户登录了，使用注册的id(觉晓号); */
+  /** 用户唯一id，在用户没用登录的时候，移动端使用用户唯一设备id代替，web端使用UUID代替，微信端建议使用open_id代替 */
   distinct_id: string
+  /**用户登录的id(觉晓号)**/
+
+  user_id: string
   /** 事件产生的时间，使用13位的时间戳表示(精确到毫秒) */
   time: number
   /** 事件上报的类型 */
@@ -17,8 +20,11 @@ export interface UserEvent {
 export type OSType = 'Android' | 'IOS' | 'Windows' | 'Mac' | string
 export type NetworkType = 'wifi' | '2g' | '3g' | '4g' | '5g' | 'unknown' | 'none'
 export type LibrayType = 'js' | 'wechat'
+export type SourceType = 'wechat' | 'pc' | 'h5'
 export type InitOption = {
   id: string
+  source: SourceType
+  debug?: boolean
 }
 
 /**
@@ -41,6 +47,8 @@ export type PresetProperties = {
   jx_lib: LibrayType
   /** SDK版本 */
   jx_lib_version: string
+  /** 渠道 */
+  jx_js_source: SourceType
   /** 设备品牌 */
   jx_brand?: string
   /** 设备制造商 */
@@ -73,8 +81,8 @@ export enum Constants {
   FETCH_URL = 'https://sdk.juexiaotime.com/sdk_js',
   FETCH_IMAGE_URL = 'https://sdk.juexiaotime.com/sdk_js.gif',
   JUEXIAO_STAT_UUID = 'JUEXIAO_STAT_UUID',
-  LIBRARY_JS = 'js',
-  LIBRARY_MINI = 'wechat'
+  LIBRARY_JS = 'js'
+  // LIBRARY_MINI = 'wechat'
 }
 
 export const version = '__VERSION__'

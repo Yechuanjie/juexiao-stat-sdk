@@ -5,16 +5,26 @@ import {
   TRACK_TYPE,
   InitOption,
   Constants,
-  version
+  version,
+  SourceType
 } from '../types'
 import { getOsInfo, sendDataWithImg } from '../utils/browser'
 import { generateUUID } from '../utils'
+
+/**
+ * Vserion 变动
+ * 需要区分distinct_id 和 user_id
+ * 需要支持debug
+ *
+ * **/
 
 export default class JueXiaoBrowserStatSDK {
   private sdkVersion: string = version
   private sdkType: LibrayType = Constants.LIBRARY_JS
   /** 项目唯一标识 */
   private projectId = ''
+  private source: SourceType
+  private isDebug = false
   private trackData = {} as UserEvent
   /**
    * Creates an instance of JueXiaoBrowserStatSDK.
@@ -23,6 +33,8 @@ export default class JueXiaoBrowserStatSDK {
    */
   constructor(options: InitOption) {
     this.projectId = options.id
+    this.source = options.source
+    this.isDebug = typeof options.debug == 'boolean' ? options.debug : false
     this.init()
   }
   private init() {
@@ -57,13 +69,13 @@ export default class JueXiaoBrowserStatSDK {
       if (data) {
         this.trackData.properties = data
       }
-      sendDataWithImg(this.projectId, Constants.FETCH_IMAGE_URL, this.trackData)
+      sendDataWithImg(this.projectId, Constants.FETCH_IMAGE_URL, this.trackData, this.isDebug)
     } else {
       let nowTrackData = Object.assign({}, this.trackData)
       if (data) {
         nowTrackData.properties = data
       }
-      sendDataWithImg(this.projectId, Constants.FETCH_IMAGE_URL, nowTrackData)
+      sendDataWithImg(this.projectId, Constants.FETCH_IMAGE_URL, nowTrackData, this.isDebug)
     }
   }
 
@@ -103,6 +115,7 @@ export default class JueXiaoBrowserStatSDK {
     const preset = {} as PresetProperties
     const osInfo = getOsInfo()
     preset.jx_lib = this.sdkType
+    preset.jx_js_source = this.source
     preset.jx_lib_version = this.sdkVersion
     if (navigator['connection']) {
       preset.jx_network_type = navigator['connection'].effectiveType
@@ -145,7 +158,7 @@ export default class JueXiaoBrowserStatSDK {
   login(loginId: string): void {
     if (loginId) {
       this.trackData.is_login = true
-      this.trackData.distinct_id = String(loginId)
+      this.trackData.user_id = String(loginId)
     } else {
       throw new Error('please make sure the login id is correct!')
     }
@@ -157,6 +170,6 @@ export default class JueXiaoBrowserStatSDK {
    */
   logout(): void {
     this.trackData.is_login = false
-    this.trackData.distinct_id = this.initUserId()
+    this.trackData.user_id = ''
   }
 }

@@ -5,16 +5,19 @@ import {
   TRACK_TYPE,
   InitOption,
   Constants,
-  version
+  version,
+  SourceType
 } from '../types'
 import { formatSystem, sendData } from '../utils/mini'
 import { generateUUID } from '../utils'
 
 export default class JueXiaoMiniStatSDK {
   private sdkVersion: string = version
-  private sdkType: LibrayType = Constants.LIBRARY_MINI
+  private sdkType: LibrayType = Constants.LIBRARY_JS
   /** 项目唯一标识 */
   private projectId = ''
+  private source: SourceType
+  private isDebug = false
   private trackData = {} as UserEvent
   /**
    * Creates an instance of JueXiaoMiniStatSDK.
@@ -23,6 +26,8 @@ export default class JueXiaoMiniStatSDK {
    */
   constructor(options: InitOption) {
     this.projectId = options.id
+    this.source = options.source
+    this.isDebug = typeof options.debug == 'boolean' ? options.debug : false
     this.init()
   }
   private async init() {
@@ -41,7 +46,7 @@ export default class JueXiaoMiniStatSDK {
   private initUserId(): string {
     let uuid = wx.getStorageSync(Constants.JUEXIAO_STAT_UUID)
     if (!uuid) {
-      uuid = generateUUID(Constants.LIBRARY_MINI)
+      uuid = generateUUID(Constants.LIBRARY_JS)
       wx.setStorageSync(Constants.JUEXIAO_STAT_UUID, uuid)
     }
     return uuid
@@ -54,13 +59,13 @@ export default class JueXiaoMiniStatSDK {
       if (data) {
         this.trackData.properties = data
       }
-      sendData(this.projectId, Constants.FETCH_IMAGE_URL, this.trackData)
+      sendData(this.projectId, Constants.FETCH_IMAGE_URL, this.trackData, this.isDebug)
     } else {
       let nowTrackData = Object.assign({}, this.trackData)
       if (data) {
         nowTrackData.properties = data
       }
-      sendData(this.projectId, Constants.FETCH_IMAGE_URL, nowTrackData)
+      sendData(this.projectId, Constants.FETCH_IMAGE_URL, nowTrackData, this.isDebug)
     }
   }
 
@@ -100,6 +105,7 @@ export default class JueXiaoMiniStatSDK {
     const preset = {} as PresetProperties
     preset.jx_lib = this.sdkType
     preset.jx_lib_version = this.sdkVersion
+    preset.jx_js_source = this.source
     const network = await wx.getNetworkType()
     preset.jx_network_type = network.networkType
     const sys = wx.getSystemInfoSync()
@@ -139,7 +145,7 @@ export default class JueXiaoMiniStatSDK {
   login(loginId: string): void {
     if (loginId) {
       this.trackData.is_login = true
-      this.trackData.distinct_id = String(loginId)
+      this.trackData.user_id = String(loginId)
     } else {
       throw new Error('please make sure the login id is correct!')
     }
@@ -151,7 +157,7 @@ export default class JueXiaoMiniStatSDK {
    */
   logout(): void {
     this.trackData.is_login = false
-    this.trackData.distinct_id = this.initUserId()
+    this.trackData.user_id = ''
   }
   /**
    * 上传opendid

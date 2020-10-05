@@ -25,7 +25,8 @@ yarn add juexiao-stat-sdk
 ```javascript
 import { BrowserStatSDK } from 'juexiao-stat-sdk'
 const stat = new BrowserStatSDK({
-  id: 'test-id' // 这里填写每个项目分配的 project_id
+  id: 'test-id', // 这里填写每个项目分配的 project_id
+  debug: true // 是否开启调试，默认false，可不传
 })
 // 全局注册
 Vue.prototype.$stat = stat
@@ -60,7 +61,8 @@ sdk.juexiaotime.com
 ```javascript
 import { MiniStatSDK } from 'juexiao-stat-sdk'
 const stat = new MiniStatSDK({
-  id: 'test-id' // 这里填写每个项目分配的 project_id
+  id: 'test-id', // 这里填写每个项目分配的 project_id
+  debug: true // 是否开启调试，默认false，可不传
 })
 wx.$stat = stat
 ```

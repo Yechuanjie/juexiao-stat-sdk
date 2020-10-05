@@ -27,11 +27,15 @@ export function formatSystem(system: string): OSType {
  * @param {string} url
  * @param {UserEvent} data
  */
-export function sendData(id: string, url: string, data: UserEvent) {
+export function sendData(id: string, url: string, data: UserEvent, debug: boolean = false) {
   if (checkPropertyKey(data.properties)) {
-    const URL = `${url}?data=${encodeURIComponent(JSON.stringify(data))}&project_id=${id}&type=${
-      Constants.LIBRARY_MINI
+    let URL = `${url}?data=${encodeURIComponent(JSON.stringify(data))}&project_id=${id}&type=${
+      Constants.LIBRARY_JS
     }`
+    // 开启调试时传入
+    if (debug) {
+      URL += '&debug=true'
+    }
     wx.request({
       url: URL,
       method: 'GET'

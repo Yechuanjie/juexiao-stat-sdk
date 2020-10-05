@@ -117,7 +117,7 @@ export function requestPost(
  * @param {string} url
  * @param {UserEvent} data
  */
-export function sendDataWithImg(id: string, url: string, data: UserEvent) {
+export function sendDataWithImg(id: string, url: string, data: UserEvent, debug: boolean = false) {
   if (checkPropertyKey(data.properties)) {
     let img: any = new Image()
     const key = 'img_log_' + Math.floor(Math.random() * 2147483648).toString(36) // 为本次数据请求创建一个唯一id
@@ -127,8 +127,13 @@ export function sendDataWithImg(id: string, url: string, data: UserEvent) {
       window[key] = null
       img = null
     }
-    img.src = `${url}?data=${encodeURIComponent(JSON.stringify(data))}&project_id=${id}&type=${
+    let fetchUrl = `${url}?data=${encodeURIComponent(JSON.stringify(data))}&project_id=${id}&type=${
       Constants.LIBRARY_JS
     }`
+    // 开启调试时传入
+    if (debug) {
+      fetchUrl += '&debug=true'
+    }
+    img.src = fetchUrl
   }
 }
