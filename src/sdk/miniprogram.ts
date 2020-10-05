@@ -27,7 +27,7 @@ export default class JueXiaoMiniStatSDK {
   constructor(options: InitOption) {
     this.projectId = options.id
     this.source = options.source
-    this.isDebug = typeof options.debug == 'boolean' ? options.debug : false
+    this.isDebug = typeof options.debug === 'boolean' ? options.debug : false
     this.init()
   }
   private async init() {

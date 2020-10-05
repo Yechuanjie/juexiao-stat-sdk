@@ -4,7 +4,6 @@ export interface UserEvent {
   /** 用户唯一id，在用户没用登录的时候，移动端使用用户唯一设备id代替，web端使用UUID代替，微信端建议使用open_id代替 */
   distinct_id: string
   /**用户登录的id(觉晓号)**/
-
   user_id: string
   /** 事件产生的时间，使用13位的时间戳表示(精确到毫秒) */
   time: number

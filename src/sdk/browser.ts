@@ -11,13 +11,6 @@ import {
 import { getOsInfo, sendDataWithImg } from '../utils/browser'
 import { generateUUID } from '../utils'
 
-/**
- * Vserion 变动
- * 需要区分distinct_id 和 user_id
- * 需要支持debug
- *
- * **/
-
 export default class JueXiaoBrowserStatSDK {
   private sdkVersion: string = version
   private sdkType: LibrayType = Constants.LIBRARY_JS
@@ -34,7 +27,7 @@ export default class JueXiaoBrowserStatSDK {
   constructor(options: InitOption) {
     this.projectId = options.id
     this.source = options.source
-    this.isDebug = typeof options.debug == 'boolean' ? options.debug : false
+    this.isDebug = typeof options.debug === 'boolean' ? options.debug : false
     this.init()
   }
   private init() {
