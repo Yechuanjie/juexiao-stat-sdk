@@ -120,6 +120,7 @@ export function requestPost(
 export function sendDataWithImg(id: string, url: string, data: UserEvent, debug: boolean = false) {
   if (checkPropertyKey(data.properties)) {
     let img: any = new Image()
+    img.crossOrigin = 'anonymous'
     const key = 'img_log_' + Math.floor(Math.random() * 2147483648).toString(36) // 为本次数据请求创建一个唯一id
     window[key] = img
     img.onload = img.onerror = img.onabort = () => {
