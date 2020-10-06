@@ -155,9 +155,10 @@ export default class JueXiaoMiniStatSDK {
    *
    * @memberof JueXiaoMiniStatSDK
    */
-  logout(): void {
+  async logout() {
     this.trackData.is_login = false
     this.trackData.user_id = ''
+    this.trackData.properties = await this.registerPresetProperties()
   }
   /**
    * 上传opendid

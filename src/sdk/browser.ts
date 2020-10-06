@@ -84,7 +84,7 @@ export default class JueXiaoBrowserStatSDK {
    * @memberof JueXiaoBrowserStatSDK
    */
   profileSet(options: object = {}) {
-    const data = Object.assign({}, options, this.trackData.properties)
+    const data = Object.assign({}, this.trackData.properties, options)
     this._trackEvent('profileSet', data)
   }
   /**
@@ -164,5 +164,6 @@ export default class JueXiaoBrowserStatSDK {
   logout(): void {
     this.trackData.is_login = false
     this.trackData.user_id = ''
+    this.trackData.properties = this.registerPresetProperties()
   }
 }
