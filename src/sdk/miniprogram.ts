@@ -52,7 +52,7 @@ export default class JueXiaoMiniStatSDK {
     return uuid
   }
 
-  private _trackEvent(trackType: TRACK_TYPE = 'track', data?: any) {
+  private async _trackEvent(trackType: TRACK_TYPE = 'track', data?: any) {
     this.trackData.type = trackType
     this.trackData.time = new Date().getTime()
     if (trackType !== 'track') {
@@ -63,7 +63,8 @@ export default class JueXiaoMiniStatSDK {
       this.trackData.properties = Object.assign(this.trackData.properties, data || {})
       sendData(this.projectId, Constants.FETCH_IMAGE_URL, this.trackData, this.isDebug)
     } else {
-      this.trackData.properties = Object.assign(this.registerPresetProperties(), data || {})
+      const properties = await this.registerPresetProperties()
+      this.trackData.properties = Object.assign(properties, data || {})
       sendData(this.projectId, Constants.FETCH_IMAGE_URL, this.trackData, this.isDebug)
     }
   }
