@@ -52,27 +52,24 @@ export default class JueXiaoMiniStatSDK {
     return uuid
   }
 
-  private _trackEvent(trackType: TRACK_TYPE = 'track', data?: PresetProperties) {
+  private _trackEvent(trackType: TRACK_TYPE = 'track', data?: any) {
     this.trackData.type = trackType
     this.trackData.time = new Date().getTime()
+    if (trackType !== 'track') {
+      delete this.trackData['event']
+    }
+    console.info(this.trackData.properties, data)
     if (trackType === 'profileSet' || trackType === 'profileSetOnce') {
-      if (data) {
-        this.trackData.properties = data
-      }
+      this.trackData.properties = Object.assign(this.trackData.properties, data || {})
       sendData(this.projectId, Constants.FETCH_IMAGE_URL, this.trackData, this.isDebug)
     } else {
-      let nowTrackData = Object.assign({}, this.trackData)
-      if (data) {
-        nowTrackData.properties = data
-      }
-      sendData(this.projectId, Constants.FETCH_IMAGE_URL, nowTrackData, this.isDebug)
+      this.trackData.properties = Object.assign(this.registerPresetProperties(), data || {})
+      sendData(this.projectId, Constants.FETCH_IMAGE_URL, this.trackData, this.isDebug)
     }
   }
-
   track(eventName: string, data = {}) {
     this.trackData.event = eventName
-    let props = Object.assign({}, this.trackData.properties, data)
-    this._trackEvent('track', props)
+    this._trackEvent('track', data)
   }
   /**
    * 设置预置属性 已存在的字段则覆盖，不存在则自动创建
@@ -81,8 +78,7 @@ export default class JueXiaoMiniStatSDK {
    * @memberof JueXiaoMiniStatSDK
    */
   profileSet(options: object = {}) {
-    const data = Object.assign({}, this.trackData.properties, options)
-    this._trackEvent('profileSet', data)
+    this._trackEvent('profileSet', options)
   }
   /**
    * 设置用户首次属性，与 profileSet 不同的是，如果被设置的用户属性已存在，则这条记录会被忽略，如果属性不存在则会自动创建
@@ -91,8 +87,7 @@ export default class JueXiaoMiniStatSDK {
    * @memberof JueXiaoMiniStatSDK
    */
   profileSetOnce(options: object = {}) {
-    const data = Object.assign({}, options, this.trackData.properties)
-    this._trackEvent('profileSetOnce', data)
+    this._trackEvent('profileSetOnce', options)
   }
   /**
    * 注册预置属性
