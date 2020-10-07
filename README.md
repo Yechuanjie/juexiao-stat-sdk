@@ -26,6 +26,7 @@ yarn add juexiao-stat-sdk
 import { BrowserStatSDK } from 'juexiao-stat-sdk'
 const stat = new BrowserStatSDK({
   id: 'test-id', // 这里填写每个项目分配的 project_id
+  source: 'pc', // 可选值 pc | wechat | h5
   debug: true // 是否开启调试，默认false，可不传
 })
 // 全局注册
@@ -62,6 +63,7 @@ sdk.juexiaotime.com
 import { MiniStatSDK } from 'juexiao-stat-sdk'
 const stat = new MiniStatSDK({
   id: 'test-id', // 这里填写每个项目分配的 project_id
+  source: 'pc', // 可选值 pc | wechat | h5
   debug: true // 是否开启调试，默认false，可不传
 })
 wx.$stat = stat
