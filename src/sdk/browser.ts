@@ -60,7 +60,7 @@ export default class JueXiaoBrowserStatSDK {
     if (trackType !== 'track') {
       delete this.trackData['event']
     }
-    this.trackData.properties = Object.assign(this.initProperties, data || {})
+    this.trackData.properties = Object.assign({}, this.initProperties, data || {})
     sendDataWithImg(this.projectId, Constants.FETCH_IMAGE_URL, this.trackData, this.isDebug)
   }
 
