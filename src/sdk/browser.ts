@@ -19,6 +19,7 @@ export default class JueXiaoBrowserStatSDK {
   private source: SourceType
   private isDebug = false
   private trackData = {} as UserEvent
+  private initProperties = {} as PresetProperties
   /**
    * Creates an instance of JueXiaoBrowserStatSDK.
    * @param {InitOption} options
@@ -33,7 +34,8 @@ export default class JueXiaoBrowserStatSDK {
   private init() {
     this.trackData.distinct_id = this.initUserId()
     this.trackData.is_login = false
-    this.trackData.properties = this.registerPresetProperties()
+    this.initProperties = this.registerPresetProperties()
+    this.trackData.properties = this.initProperties
     console.info('USER_EVENT_MODAL', this.trackData)
   }
   /**
@@ -58,14 +60,8 @@ export default class JueXiaoBrowserStatSDK {
     if (trackType !== 'track') {
       delete this.trackData['event']
     }
-    console.info(this.trackData.properties, data)
-    if (trackType === 'profileSet' || trackType === 'profileSetOnce') {
-      this.trackData.properties = Object.assign(this.trackData.properties, data || {})
-      sendDataWithImg(this.projectId, Constants.FETCH_IMAGE_URL, this.trackData, this.isDebug)
-    } else {
-      this.trackData.properties = Object.assign(this.registerPresetProperties(), data || {})
-      sendDataWithImg(this.projectId, Constants.FETCH_IMAGE_URL, this.trackData, this.isDebug)
-    }
+    this.trackData.properties = Object.assign(this.initProperties, data || {})
+    sendDataWithImg(this.projectId, Constants.FETCH_IMAGE_URL, this.trackData, this.isDebug)
   }
 
   track(eventName: string, data = {}) {
@@ -159,6 +155,6 @@ export default class JueXiaoBrowserStatSDK {
   logout(): void {
     this.trackData.is_login = false
     this.trackData.user_id = ''
-    this.trackData.properties = this.registerPresetProperties()
+    this.trackData.properties = this.initProperties
   }
 }

@@ -19,6 +19,7 @@ export default class JueXiaoMiniStatSDK {
   private source: SourceType
   private isDebug = false
   private trackData = {} as UserEvent
+  private initProperties = {} as PresetProperties
   /**
    * Creates an instance of JueXiaoMiniStatSDK.
    * @param {InitOption} options
@@ -33,7 +34,8 @@ export default class JueXiaoMiniStatSDK {
   private async init() {
     this.trackData.distinct_id = this.initUserId()
     this.trackData.is_login = false
-    this.trackData.properties = await this.registerPresetProperties()
+    this.initProperties = await this.registerPresetProperties()
+    this.trackData.properties = this.initProperties
     console.info('USER_EVENT_MODAL', this.trackData)
   }
   /**
@@ -58,15 +60,8 @@ export default class JueXiaoMiniStatSDK {
     if (trackType !== 'track') {
       delete this.trackData['event']
     }
-    console.info(this.trackData.properties, data)
-    if (trackType === 'profileSet' || trackType === 'profileSetOnce') {
-      this.trackData.properties = Object.assign(this.trackData.properties, data || {})
-      sendData(this.projectId, Constants.FETCH_IMAGE_URL, this.trackData, this.isDebug)
-    } else {
-      const properties = await this.registerPresetProperties()
-      this.trackData.properties = Object.assign(properties, data || {})
-      sendData(this.projectId, Constants.FETCH_IMAGE_URL, this.trackData, this.isDebug)
-    }
+    this.trackData.properties = Object.assign(this.initProperties, data || {})
+    sendData(this.projectId, Constants.FETCH_IMAGE_URL, this.trackData, this.isDebug)
   }
   track(eventName: string, data = {}) {
     this.trackData.event = eventName
@@ -154,7 +149,7 @@ export default class JueXiaoMiniStatSDK {
   async logout() {
     this.trackData.is_login = false
     this.trackData.user_id = ''
-    this.trackData.properties = await this.registerPresetProperties()
+    this.trackData.properties = this.initProperties
   }
   /**
    * 上传opendid
