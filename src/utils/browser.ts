@@ -19,7 +19,7 @@ export function getOsInfo() {
     os = 'Android'
     const index = ua.indexOf('android')
     osVersion = String(parseFloat(ua.slice(index + 8)))
-  } else if (isIos || isMac) {
+  } else if (isIos) {
     os = 'IOS'
     const info = ua.match(/cpu iphone os (.*?) like mac os/) || []
     osVersion = String(info.length && info[1].replace(/_/g, '.'))
