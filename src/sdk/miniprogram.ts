@@ -1,3 +1,4 @@
+import md5 from 'js-md5'
 import {
   PresetProperties,
   UserEvent,
@@ -18,6 +19,7 @@ export default class JueXiaoMiniStatSDK {
   private projectId = ''
   private source: SourceType
   private isDebug = false
+  private trackTimes = 1
   private trackData = {} as UserEvent
   private initProperties = {} as PresetProperties
   /**
@@ -61,6 +63,10 @@ export default class JueXiaoMiniStatSDK {
       delete this.trackData['event']
     }
     this.trackData.properties = Object.assign({}, this.initProperties, data || {})
+    if (trackType == 'track') {
+      this.trackData.properties.jx_track_id = this.trackTimes
+      this.trackTimes += 1
+    }
     sendData(this.projectId, Constants.FETCH_IMAGE_URL, this.trackData, this.isDebug)
   }
   track(eventName: string, data = {}) {
@@ -86,6 +92,16 @@ export default class JueXiaoMiniStatSDK {
     this._trackEvent('profileSetOnce', options)
   }
   /**
+   * 获取session_id
+   *
+   * @private
+   * @returns {string}
+   * @memberof JueXiaoBrowserStatSDK
+   */
+  private getSessionId(): string {
+    return `${md5(this.trackData.distinct_id)}_${new Date().getTime()}`
+  }
+  /**
    * 注册预置属性
    *
    * @private
@@ -97,6 +113,7 @@ export default class JueXiaoMiniStatSDK {
     preset.jx_lib = this.sdkType
     preset.jx_lib_version = this.sdkVersion
     preset.jx_js_source = this.source
+    preset.session_id = this.getSessionId()
     const network = await wx.getNetworkType()
     preset.jx_network_type = network.networkType
     const sys = wx.getSystemInfoSync()
@@ -154,9 +171,9 @@ export default class JueXiaoMiniStatSDK {
   /**
    * 上传opendid
    *
-   * 为了提高数据的准确性，小程序需要在运行时从服务端获取 openid，并主动调用 sdk 提供的 setOpenid 方法。
-   * 在 app.js 文件 onLaunch 周期中调用 stat.sendOpenid() 方法上传从后端获取的 OpenID。
+   * 为了提高数据的准确性，小程序需要在运行时从服务端获取 openid 和 unionid
    *
+   * 注意：openid一定能获取到，unionid在用户从未登录授权过公众号时无法获取到
    * @param {string} openid
    * @memberof JueXiaoMiniStatSDK
    */
@@ -167,6 +184,20 @@ export default class JueXiaoMiniStatSDK {
       this.trackData.distinct_id = String(openid)
       // 把本地的uuid替换为openid
       wx.setStorageSync(Constants.JUEXIAO_STAT_UUID, openid)
+    }
+  }
+  /**
+   * 上传unionid
+   *
+   * 为了提高数据的准确性，小程序需要在运行时从服务端获取 openid 和 unionid
+   *
+   * 注意：openid一定能获取到，unionid在用户从未登录授权过公众号时无法获取到
+   * @param {string} unionid
+   * @memberof JueXiaoMiniStatSDK
+   */
+  setUnionid(unionid: string) {
+    if (unionid) {
+      this.initProperties.unionid = unionid
     }
   }
 }

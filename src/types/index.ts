@@ -64,6 +64,12 @@ export type PresetProperties = {
   anonymous_id?: string
   /** 注册成功后获得的user id */
   register_id?: string
+  /** 自增事件id 每一次产生数据的时候 +1 只在track接口增加，用户信息接口不增加 自增从1开始 */
+  jx_track_id: number
+  /** 每次启动app（全端）的时候生成全新的session_id，退出的时候清除session_id */
+  session_id: string
+  /** 用户唯一微信标识 */
+  unionid?: string
   /** 其他自定义属性 */
   [propName: string]: any
 }

@@ -1,3 +1,4 @@
+import md5 from 'js-md5'
 import {
   PresetProperties,
   UserEvent,
@@ -18,6 +19,7 @@ export default class JueXiaoBrowserStatSDK {
   private projectId = ''
   private source: SourceType
   private isDebug = false
+  private trackTimes = 1
   private trackData = {} as UserEvent
   private initProperties = {} as PresetProperties
   /**
@@ -36,7 +38,6 @@ export default class JueXiaoBrowserStatSDK {
     this.trackData.is_login = false
     this.initProperties = this.registerPresetProperties()
     this.trackData.properties = this.initProperties
-    console.info('USER_EVENT_MODAL', this.trackData)
   }
   /**
    * 初始化UUID
@@ -61,6 +62,10 @@ export default class JueXiaoBrowserStatSDK {
       delete this.trackData['event']
     }
     this.trackData.properties = Object.assign({}, this.initProperties, data || {})
+    if (trackType == 'track') {
+      this.trackData.properties.jx_track_id = this.trackTimes
+      this.trackTimes += 1
+    }
     sendDataWithImg(this.projectId, Constants.FETCH_IMAGE_URL, this.trackData, this.isDebug)
   }
 
@@ -89,6 +94,16 @@ export default class JueXiaoBrowserStatSDK {
     this._trackEvent('profileSetOnce', options)
   }
   /**
+   * 获取session_id
+   *
+   * @private
+   * @returns {string}
+   * @memberof JueXiaoBrowserStatSDK
+   */
+  private getSessionId(): string {
+    return `${md5(this.trackData.distinct_id)}_${new Date().getTime()}`
+  }
+  /**
    * 注册预置属性
    *
    * @private
@@ -98,6 +113,7 @@ export default class JueXiaoBrowserStatSDK {
   private registerPresetProperties(): PresetProperties {
     const preset = {} as PresetProperties
     const osInfo = getOsInfo()
+    preset.session_id = this.getSessionId()
     preset.jx_lib = this.sdkType
     preset.jx_js_source = this.source
     preset.jx_lib_version = this.sdkVersion

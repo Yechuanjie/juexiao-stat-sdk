@@ -144,12 +144,24 @@ stat.profileSetOnce({
 
 ### 差异 API
 
+为了提高数据的准确性，小程序在每次 **启动时** 需要调用 `login()` 方法换取 `code`，然后从服务端获取 `openid `和 `unionid`。注意：`openid` 一定能获取到，`unionid` 在用户从未登录授权过公众号相关应用时无法获取
+
+获取成功后，需要调用以下两个差异API
+
 ##### setOpenid
 
-微信小程序中，默认情况下使用 `UUID` 作为用户标识，但删除小程序的操作，会导致 UUID 改变，因此，为了数据的准确性，建议获取并使用 `openid`。
+微信小程序中，默认情况下使用 `UUID` 作为用户标识，但删除小程序的操作，会导致 `UUID `改变，因此，为了数据的准确性，建议获取并使用 `openid`
 
-`sdk`在微信小程序版本中 提供了一个差异 `API`，即 `setOpenid`，调用之后，会将 `UUID`替换为 `openid` 的值，在用户未登录的情况下，后续上报都会采用 `openid`的值。
+调用该方法之后，会将 `UUID`替换为 `openid` 的值，在用户未登录的情况下，后续上报都会采用 `openid`的值
 
 ```javascript
 stat.setOpenid('openid')
+```
+
+###### setUnionid
+
+在能获取到 `unionid` 的情况下，需要主动设置 `unionid`
+
+```javascript
+stat.setUnionid('unionid')
 ```

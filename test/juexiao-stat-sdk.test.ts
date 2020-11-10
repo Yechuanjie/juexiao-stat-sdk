@@ -1,13 +1,13 @@
 import { BrowserStatSDK, MiniStatSDK } from '../src/juexiao-stat-sdk'
 /**
- * BrowserStatSDK test
+ * SDK test
  */
-describe('BrowserStatSDK test', () => {
+describe('SDK test', () => {
   it('works if true is truthy', () => {
     expect(true).toBeTruthy()
   })
 
-  it('BrowserStatSDK Class is instantiable', () => {
+  it('SDK Class is instantiable', () => {
     const stat = new BrowserStatSDK({
       id: 'test_1',
       source: 'h5'
@@ -18,5 +18,8 @@ describe('BrowserStatSDK test', () => {
     })
     expect(stat).toBeInstanceOf(BrowserStatSDK)
     expect(ministat).toBeInstanceOf(MiniStatSDK)
+
+    stat.track('$startApp')
+    ministat.track('$startApp')
   })
 })
