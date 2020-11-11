@@ -62,7 +62,7 @@ export default class JueXiaoBrowserStatSDK {
       delete this.trackData['event']
     }
     this.trackData.properties = Object.assign({}, this.initProperties, data || {})
-    if (trackType == 'track') {
+    if (trackType === 'track') {
       this.trackData.properties.jx_track_id = this.trackTimes
       this.trackTimes += 1
     }
