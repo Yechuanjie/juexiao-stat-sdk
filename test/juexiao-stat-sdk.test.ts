@@ -18,8 +18,5 @@ describe('SDK test', () => {
     })
     expect(stat).toBeInstanceOf(BrowserStatSDK)
     expect(ministat).toBeInstanceOf(MiniStatSDK)
-
-    stat.track('$startApp')
-    ministat.track('$startApp')
   })
 })
