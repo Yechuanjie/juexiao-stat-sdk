@@ -33,10 +33,13 @@ export default class JueXiaoMiniStatSDK {
     this.isDebug = typeof options.debug === 'boolean' ? options.debug : false
     this.init()
   }
-  private async init() {
+  private init() {
     this.trackData.distinct_id = this.initUserId()
     this.trackData.is_login = false
-    this.initProperties = await this.registerPresetProperties()
+    this.initProperties = this.registerPresetProperties()
+    wx.getNetworkType().then(res => {
+      this.initProperties.jx_network_type = res.networkType
+    })
     this.trackData.properties = this.initProperties
     console.info('USER_EVENT_MODAL', this.trackData)
   }
@@ -108,14 +111,12 @@ export default class JueXiaoMiniStatSDK {
    * @param {Object} params
    * @memberof JueXiaoMiniStatSDK
    */
-  private async registerPresetProperties(): Promise<PresetProperties> {
+  private registerPresetProperties(): PresetProperties {
     const preset = {} as PresetProperties
     preset.jx_lib = this.sdkType
     preset.jx_lib_version = this.sdkVersion
     preset.jx_js_source = this.source
     preset.session_id = this.getSessionId()
-    const network = await wx.getNetworkType()
-    preset.jx_network_type = network.networkType
     const sys = wx.getSystemInfoSync()
     preset.jx_manufacturer = sys['brand']
     preset.jx_device_mode = sys['model']
@@ -124,7 +125,6 @@ export default class JueXiaoMiniStatSDK {
     preset.jx_os = formatSystem(sys['platform'])
     preset.jx_os_version =
       sys['system'].indexOf(' ') > -1 ? sys['system'].split(' ')[1] : sys['system']
-
     console.info(`sdk-version: ${this.sdkVersion}`)
     return preset
   }
