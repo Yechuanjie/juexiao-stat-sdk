@@ -7,12 +7,11 @@ import json from 'rollup-plugin-json'
 import replace from '@rollup/plugin-replace'
 
 const pkg = require('./package.json')
-
 const libraryName = `juexiao-stat-sdk`
 
 const env = process.env.NODE_ENV
-
 console.info('env: ', env)
+const currentVersion = pkg.version
 
 export default {
   input: `src/${libraryName}.ts`,
@@ -36,7 +35,7 @@ export default {
     // Compile TypeScript files
     typescript({ useTsconfigDeclarationDir: true }),
     replace({
-      __VERSION__: pkg.version
+      __VERSION__: currentVersion
     }),
     // Allow bundling cjs modules (unlike webpack, rollup doesn't understand cjs)
     commonjs(),
