@@ -12,11 +12,6 @@ describe('SDK test', () => {
       id: 'test_1',
       source: 'h5'
     })
-    const ministat = new MiniStatSDK({
-      id: 'test_1',
-      source: 'pc'
-    })
     expect(stat).toBeInstanceOf(BrowserStatSDK)
-    expect(ministat).toBeInstanceOf(MiniStatSDK)
   })
 })
