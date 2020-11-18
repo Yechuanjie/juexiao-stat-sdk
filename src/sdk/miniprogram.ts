@@ -37,9 +37,6 @@ export default class JueXiaoMiniStatSDK {
     this.trackData.distinct_id = this.initUserId()
     this.trackData.is_login = false
     this.initProperties = this.registerPresetProperties()
-    wx.getNetworkType().then(res => {
-      this.initProperties.jx_network_type = res.networkType
-    })
     this.trackData.properties = this.initProperties
     console.info('USER_EVENT_MODAL', this.trackData)
   }
@@ -59,18 +56,30 @@ export default class JueXiaoMiniStatSDK {
     return uuid
   }
 
-  private async _trackEvent(trackType: TRACK_TYPE = 'track', data?: any) {
-    this.trackData.type = trackType
-    this.trackData.time = new Date().getTime()
-    if (trackType !== 'track') {
-      delete this.trackData['event']
+  private _trackEvent(trackType: TRACK_TYPE = 'track', data?: any) {
+    const trackAction = () => {
+      this.trackData.type = trackType
+      this.trackData.time = new Date().getTime()
+      if (trackType !== 'track') {
+        delete this.trackData['event']
+      }
+      this.trackData.properties = Object.assign({}, this.initProperties, data || {})
+      if (trackType === 'track') {
+        this.trackData.properties.jx_track_id = this.trackTimes
+        this.trackTimes += 1
+      }
+      sendData(this.projectId, Constants.FETCH_IMAGE_URL, this.trackData, this.isDebug)
     }
-    this.trackData.properties = Object.assign({}, this.initProperties, data || {})
-    if (trackType === 'track') {
-      this.trackData.properties.jx_track_id = this.trackTimes
-      this.trackTimes += 1
-    }
-    sendData(this.projectId, Constants.FETCH_IMAGE_URL, this.trackData, this.isDebug)
+    // 每次都需要获取网络类型
+    wx.getNetworkType()
+      .then(res => {
+        this.initProperties.jx_network_type = res.networkType
+        trackAction()
+      })
+      .catch(() => {
+        this.initProperties.jx_network_type = 'unknown'
+        trackAction()
+      })
   }
   track(eventName: string, data = {}) {
     this.trackData.event = eventName
