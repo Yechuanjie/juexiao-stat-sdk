@@ -173,4 +173,18 @@ export default class JueXiaoBrowserStatSDK {
     this.trackData.user_id = ''
     this.trackData.properties = this.initProperties
   }
+  /**
+   * 上传unionid
+   *
+   * 为了提高数据的准确性，小程序需要在运行时从服务端获取 openid 和 unionid
+   *
+   * 注意：openid一定能获取到，unionid在用户从未登录授权过公众号时无法获取到
+   * @param {string} unionid
+   * @memberof JueXiaoMiniStatSDK
+   */
+  setUnionid(unionid: string) {
+    if (unionid) {
+      this.initProperties.unionid = unionid
+    }
+  }
 }
