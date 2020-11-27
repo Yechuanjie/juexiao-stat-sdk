@@ -38,6 +38,27 @@ export default class JueXiaoBrowserStatSDK {
     this.trackData.is_login = false
     this.initProperties = this.registerPresetProperties()
     this.trackData.properties = this.initProperties
+    this.initActiveTimeout()
+  }
+  /**
+   * 初始化活跃状态定时器
+   * 当用户初始化sdk后，一直挂起到第二天，会被认为是非活跃状态，需要主动 track 一次 $startApp 事件
+   * @private
+   * @memberof JueXiaoBrowserStatSDK
+   */
+  private initActiveTimeout() {
+    const now = new Date()
+    const year = now.getFullYear()
+    const month = now.getMonth() + 1
+    const day = now.getDate()
+    const date = `${year}-${month}-${day}`
+    const startTime = now.getTime()
+    // 结束时间为第二天的0点过1秒
+    const endTime = new Date(date).getTime() + 24 * 60 * 60 * 1000 + 1000
+    setTimeout(() => {
+      this.track('$startApp')
+      this.initActiveTimeout()
+    }, endTime - startTime)
   }
   /**
    * 初始化UUID
