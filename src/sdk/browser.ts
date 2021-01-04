@@ -51,7 +51,7 @@ export default class JueXiaoBrowserStatSDK {
     const year = now.getFullYear()
     const month = now.getMonth() + 1
     const day = now.getDate()
-    const date = `${year}-${month}-${day}`
+    const date = `${year}/${month}/${day}`
     const startTime = now.getTime()
     // 结束时间为第二天的0点过1秒
     const endTime = new Date(date).getTime() + 24 * 60 * 60 * 1000 + 1000
