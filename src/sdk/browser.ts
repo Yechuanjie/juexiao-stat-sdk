@@ -51,6 +51,7 @@ export default class JueXiaoBrowserStatSDK {
     const year = now.getFullYear()
     const month = now.getMonth() + 1
     const day = now.getDate()
+    // ios 日期不能使用"-" 使用"/"代替
     const date = `${year}/${month}/${day}`
     const startTime = now.getTime()
     // 结束时间为第二天的0点过1秒
