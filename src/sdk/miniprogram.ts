@@ -70,16 +70,21 @@ export default class JueXiaoMiniStatSDK {
       }
       sendData(this.projectId, Constants.FETCH_IMAGE_URL, this.trackData, this.isDebug)
     }
-    // 每次都需要获取网络类型
-    wx.getNetworkType()
-      .then(res => {
-        this.initProperties.jx_network_type = res.networkType
-        trackAction()
-      })
-      .catch(() => {
-        this.initProperties.jx_network_type = 'unknown'
-        trackAction()
-      })
+    try {
+      // 每次都需要获取网络类型
+      wx.getNetworkType()
+        .then(res => {
+          this.initProperties.jx_network_type = res.networkType
+          trackAction()
+        })
+        .catch(() => {
+          this.initProperties.jx_network_type = 'unknown'
+          trackAction()
+        })
+    } catch (error) {
+      this.initProperties.jx_network_type = 'unknown'
+      trackAction()
+    }
   }
   track(eventName: string, data = {}) {
     this.trackData.event = eventName
