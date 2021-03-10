@@ -42,16 +42,6 @@ export function sendData(id: string, url: string, data: UserEvent, debug: boolea
         url: URL,
         method: 'GET'
       })
-    } else if (my) {
-      my.request({
-        url: URL,
-        method: 'GET'
-      })
-    } else if (qq) {
-      qq.request({
-        url: URL,
-        method: 'GET'
-      })
     }
   }
 }

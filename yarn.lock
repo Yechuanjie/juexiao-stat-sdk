@@ -6450,6 +6450,11 @@ min-indent@^1.0.0:
   resolved "https://registry.npm.taobao.org/min-indent/download/min-indent-1.0.1.tgz#a63f681673b30571fbe8bc25686ae746eefa9869"
   integrity sha1-pj9oFnOzBXH76LwlaGrnRu76mGk=
 
+mini-types@^0.1.5:
+  version "0.1.5"
+  resolved "https://registry.npm.taobao.org/mini-types/download/mini-types-0.1.5.tgz?cache=0&sync_timestamp=1614611572783&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fmini-types%2Fdownload%2Fmini-types-0.1.5.tgz#1881f7cb1a63bc398d97bf9788c2e3840d307404"
+  integrity sha1-GIH3yxpjvDmNl7+XiMLjhA0wdAQ=
+
 minimatch@^3.0.0, minimatch@^3.0.3, minimatch@^3.0.4:
   version "3.0.4"
   resolved "https://registry.npm.taobao.org/minimatch/download/minimatch-3.0.4.tgz?cache=0&sync_timestamp=1597044082534&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fminimatch%2Fdownload%2Fminimatch-3.0.4.tgz#5166e286457f03306064be5497e8dbb0c3d32083"
