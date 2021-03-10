@@ -37,18 +37,18 @@ export function sendData(id: string, url: string, data: UserEvent, debug: boolea
       URL += '&debug=true'
     }
     // 根据环境 wx,my,qq
-    if (globalThis.wx) {
-      globalThis.wx.request({
+    if (wx) {
+      wx.request({
         url: URL,
         method: 'GET'
       })
-    } else if (globalThis.my) {
-      globalThis.my.request({
+    } else if (my) {
+      my.request({
         url: URL,
         method: 'GET'
       })
-    } else if (globalThis.qq) {
-      globalThis.qq.request({
+    } else if (qq) {
+      qq.request({
         url: URL,
         method: 'GET'
       })
