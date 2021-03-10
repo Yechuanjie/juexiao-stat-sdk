@@ -36,7 +36,7 @@ export function sendData(id: string, url: string, data: UserEvent, debug: boolea
     if (debug) {
       URL += '&debug=true'
     }
-    // 根据环境 wx,my,qq
+    // 根据环境不同使用 wx,my,qq
     if (wx) {
       wx.request({
         url: URL,
