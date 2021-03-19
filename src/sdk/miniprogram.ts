@@ -183,6 +183,15 @@ export default class JueXiaoMiniStatSDK {
     this.trackData.properties = this.initProperties
   }
   /**
+   * 设置公共属性，设置后每次上报都会带有设置的属性
+   *
+   * @param {*} [params={}]
+   * @memberof JueXiaoBrowserStatSDK
+   */
+  setPublicProperties(params: object = {}) {
+    this.initProperties = Object.assign({}, this.initProperties, params)
+  }
+  /**
    * 上传opendid
    *
    * 为了提高数据的准确性，小程序需要在运行时从服务端获取 openid 和 unionid

@@ -80,42 +80,7 @@ export function getOsInfo() {
   }
   return obj
 }
-/**
- * post请求
- *
- * @export
- * @param {string} id
- * @param {string} url
- * @param {object} data
- * @returns
- */
-export function requestPost(
-  id: string,
-  url: string,
-  data: object
-): Promise<{
-  code: number
-}> {
-  return new Promise((resolve, reject) => {
-    const xhr = new XMLHttpRequest()
-    xhr.open('post', url)
-    xhr.setRequestHeader('Content-Type', 'application/json')
-    xhr.setRequestHeader('project_id', id)
-    xhr.setRequestHeader('type', 'js')
-    xhr.withCredentials = true
-    xhr.onreadystatechange = function() {
-      if (xhr.readyState === 4 && xhr.status === 200) {
-        resolve(xhr.response)
-      } else {
-        reject(xhr.responseText)
-      }
-    }
-    const stringfyData = {
-      data: [data]
-    }
-    xhr.send(JSON.stringify(stringfyData))
-  })
-}
+
 /**
  * 使用图片的请求方式
  *
