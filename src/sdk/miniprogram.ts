@@ -189,7 +189,7 @@ export default class JueXiaoMiniStatSDK {
    * @memberof JueXiaoBrowserStatSDK
    */
   setPublicProperties(params: object = {}) {
-    this.initProperties = Object.assign({}, this.initProperties, params)
+    this.initProperties = Object.assign({}, params, this.initProperties)
   }
   /**
    * 上传opendid
