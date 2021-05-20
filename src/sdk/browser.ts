@@ -31,14 +31,19 @@ export default class JueXiaoBrowserStatSDK {
     this.projectId = options.id
     this.source = options.source
     this.isDebug = typeof options.debug === 'boolean' ? options.debug : false
-    this.init()
+    this.init(options)
   }
-  private init() {
+  private init(options: InitOption) {
     this.trackData.distinct_id = this.initUserId()
     this.trackData.is_login = false
     this.initProperties = this.registerPresetProperties()
     this.trackData.properties = this.initProperties
+    if (options.userId) {
+      this.login(options.userId)
+    }
     this.initActiveTimeout()
+    // 自动触发启动事件
+    this.track('$startApp')
   }
   /**
    * 初始化活跃状态定时器
@@ -104,6 +109,7 @@ export default class JueXiaoBrowserStatSDK {
   profileSet(options: object = {}) {
     // const data = Object.assign({}, this.trackData.properties, options)
     this._trackEvent('profileSet', options)
+    this.track('$startApp')
   }
   /**
    * 设置用户首次属性，与 profileSet 不同的是，如果被设置的用户属性已存在，则这条记录会被忽略，如果属性不存在则会自动创建

@@ -24,6 +24,7 @@ export type InitOption = {
   id: string
   source: SourceType
   debug?: boolean
+  userId?: string
 }
 
 /**

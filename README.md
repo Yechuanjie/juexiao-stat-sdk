@@ -27,7 +27,8 @@ import { BrowserStatSDK } from 'juexiao-stat-sdk'
 const stat = new BrowserStatSDK({
   id: 'test-id', // 这里填写每个项目分配的 project_id
   source: 'pc', // 可选值 pc | wechat | h5
-  debug: true // 是否开启调试，默认false，可不传
+  debug: true, // 是否开启调试，默认false，可不传  （一般使用 process.env.NODE_ENV != 'production'）
+  userId: 123 // 用户id 初始化sdk前，如果用户已有登录信息，需要传入userId （一般使用 store.state.userInfo.id）
 })
 // 全局注册
 Vue.prototype.$stat = stat
@@ -64,7 +65,8 @@ import { MiniStatSDK } from 'juexiao-stat-sdk'
 const stat = new MiniStatSDK({
   id: 'test-id', // 这里填写每个项目分配的 project_id
   source: 'pc', // 可选值 pc | wechat | h5
-  debug: true // 是否开启调试，默认false，可不传
+  debug: true, // 是否开启调试，默认false，可不传  （一般使用 process.env.NODE_ENV != 'production'）
+  userId: 123 // 用户id 初始化sdk前，如果用户已有登录信息，需要传入userId （一般使用 store.state.userInfo.id）
 })
 wx.$stat = stat
 ```
@@ -144,13 +146,13 @@ stat.profileSetOnce({
 
 ### 差异 API
 
-为了提高数据的准确性，小程序在每次 **启动时** 需要调用 `login()` 方法换取 `code`，然后从服务端获取 `openid `和 `unionid`。注意：`openid` 一定能获取到，`unionid` 在用户从未登录授权过公众号相关应用时无法获取
+为了提高数据的准确性，小程序在每次 **启动时** 需要调用 `login()` 方法换取 `code`，然后从服务端获取  `openid`和  `unionid`。注意：`openid` 一定能获取到，`unionid` 在用户从未登录授权过公众号相关应用时无法获取
 
-获取成功后，需要调用以下两个差异API
+获取成功后，需要调用以下两个差异 API
 
 ##### setOpenid
 
-微信小程序中，默认情况下使用 `UUID` 作为用户标识，但删除小程序的操作，会导致 `UUID `改变，因此，为了数据的准确性，建议获取并使用 `openid`
+微信小程序中，默认情况下使用 `UUID` 作为用户标识，但删除小程序的操作，会导致 `UUID`改变，因此，为了数据的准确性，建议获取并使用 `openid`
 
 调用该方法之后，会将 `UUID`替换为 `openid` 的值，在用户未登录的情况下，后续上报都会采用 `openid`的值
 

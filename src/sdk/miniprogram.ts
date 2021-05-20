@@ -31,14 +31,19 @@ export default class JueXiaoMiniStatSDK {
     this.projectId = options.id
     this.source = options.source
     this.isDebug = typeof options.debug === 'boolean' ? options.debug : false
-    this.init()
+    this.init(options)
   }
-  private init() {
+  private init(options: InitOption) {
     this.trackData.distinct_id = this.initUserId()
     this.trackData.is_login = false
     this.initProperties = this.registerPresetProperties()
     this.trackData.properties = this.initProperties
     console.info('USER_EVENT_MODAL', this.trackData)
+    if (options.userId) {
+      this.login(options.userId)
+    }
+    // 自动触发启动事件
+    this.track('$startApp')
   }
   /**
    * 初始化UUID
@@ -97,6 +102,7 @@ export default class JueXiaoMiniStatSDK {
    * @memberof JueXiaoMiniStatSDK
    */
   profileSet(options: object = {}) {
+    this.track('$startApp')
     this._trackEvent('profileSet', options)
   }
   /**
