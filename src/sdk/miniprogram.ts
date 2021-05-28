@@ -93,8 +93,8 @@ export default class JueXiaoMiniStatSDK {
     // }
   }
   track(eventName: string, data = {}) {
-    this.trackData.event = eventName
     wx.getNetworkType().then(res => {
+      this.trackData.event = eventName
       this.initProperties.jx_network_type = res.networkType
       this._trackEvent('track', data)
     })
@@ -168,9 +168,9 @@ export default class JueXiaoMiniStatSDK {
     if (!loginId) {
       throw new Error('please make sure the login id is correct!')
     }
-    this.trackData.properties.anonymous_id = this.initUserId()
-    this.trackData.properties.register_id = loginId
     wx.getNetworkType().then(res => {
+      this.trackData.properties.anonymous_id = this.initUserId()
+      this.trackData.properties.register_id = loginId
       this.initProperties.jx_network_type = res.networkType
       this._trackEvent('trackSignUp')
       delete this.trackData.properties['anonymous_id']
