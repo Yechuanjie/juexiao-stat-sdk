@@ -75,25 +75,29 @@ export default class JueXiaoMiniStatSDK {
       }
       sendData(this.projectId, Constants.FETCH_IMAGE_URL, this.trackData, this.isDebug)
     }
-    try {
-      // 每次都需要获取网络类型
-      wx.getNetworkType()
-        .then(res => {
-          this.initProperties.jx_network_type = res.networkType
-          trackAction()
-        })
-        .catch(() => {
-          this.initProperties.jx_network_type = 'unknown'
-          trackAction()
-        })
-    } catch (error) {
-      this.initProperties.jx_network_type = 'unknown'
-      trackAction()
-    }
+    trackAction()
+    // try {
+    //   // 每次都需要获取网络类型
+    //   wx.getNetworkType()
+    //     .then(res => {
+    //       this.initProperties.jx_network_type = res.networkType
+    //       trackAction()
+    //     })
+    //     .catch(() => {
+    //       this.initProperties.jx_network_type = 'unknown'
+    //       trackAction()
+    //     })
+    // } catch (error) {
+    //   this.initProperties.jx_network_type = 'unknown'
+    //   trackAction()
+    // }
   }
   track(eventName: string, data = {}) {
     this.trackData.event = eventName
-    this._trackEvent('track', data)
+    wx.getNetworkType().then(res => {
+      this.initProperties.jx_network_type = res.networkType
+      this._trackEvent('track', data)
+    })
   }
   /**
    * 设置预置属性 已存在的字段则覆盖，不存在则自动创建
@@ -103,7 +107,10 @@ export default class JueXiaoMiniStatSDK {
    */
   profileSet(options: object = {}) {
     this.track('$startApp')
-    this._trackEvent('profileSet', options)
+    wx.getNetworkType().then(res => {
+      this.initProperties.jx_network_type = res.networkType
+      this._trackEvent('profileSet', options)
+    })
   }
   /**
    * 设置用户首次属性，与 profileSet 不同的是，如果被设置的用户属性已存在，则这条记录会被忽略，如果属性不存在则会自动创建
@@ -112,7 +119,10 @@ export default class JueXiaoMiniStatSDK {
    * @memberof JueXiaoMiniStatSDK
    */
   profileSetOnce(options: object = {}) {
-    this._trackEvent('profileSetOnce', options)
+    wx.getNetworkType().then(res => {
+      this.initProperties.jx_network_type = res.networkType
+      this._trackEvent('profileSetOnce', options)
+    })
   }
   /**
    * 获取session_id
@@ -160,9 +170,12 @@ export default class JueXiaoMiniStatSDK {
     }
     this.trackData.properties.anonymous_id = this.initUserId()
     this.trackData.properties.register_id = loginId
-    this._trackEvent('trackSignUp')
-    delete this.trackData.properties['anonymous_id']
-    delete this.trackData.properties['register_id']
+    wx.getNetworkType().then(res => {
+      this.initProperties.jx_network_type = res.networkType
+      this._trackEvent('trackSignUp')
+      delete this.trackData.properties['anonymous_id']
+      delete this.trackData.properties['register_id']
+    })
   }
   /**
    * 用户登录 - 用于更新用户id
