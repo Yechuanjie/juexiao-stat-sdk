@@ -25,6 +25,8 @@ export type InitOption = {
   source: SourceType
   debug?: boolean
   userId?: string
+  /** 用于h5和小程序的项目区分 */
+  appSource?: string
 }
 
 /**
@@ -71,6 +73,8 @@ export type PresetProperties = {
   session_id: string
   /** 用户唯一微信标识 */
   unionid?: string
+  /** h5或小程序项目标识 */
+  app_source?: string
   /** 其他自定义属性 */
   [propName: string]: any
 }

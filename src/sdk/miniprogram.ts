@@ -36,14 +36,17 @@ export default class JueXiaoMiniStatSDK {
   private init(options: InitOption) {
     this.trackData.distinct_id = this.initUserId()
     this.trackData.is_login = false
-    this.initProperties = this.registerPresetProperties()
+    this.initProperties = this.registerPresetProperties(options.appSource)
     this.trackData.properties = this.initProperties
     console.info('USER_EVENT_MODAL', this.trackData)
     if (options.userId) {
       this.login(options.userId)
     }
-    // 自动触发启动事件
-    this.track('$startApp')
+    // 兼容旧的写法 version > 1.3.13
+    if (Number(this.sdkVersion.replace(/./g, '')) > 1313) {
+      // 自动触发启动事件
+      this.track('$startApp')
+    }
   }
   /**
    * 初始化UUID
@@ -141,8 +144,9 @@ export default class JueXiaoMiniStatSDK {
    * @param {Object} params
    * @memberof JueXiaoMiniStatSDK
    */
-  private registerPresetProperties(): PresetProperties {
+  private registerPresetProperties(appSource?: string): PresetProperties {
     const preset = {} as PresetProperties
+    preset.app_source = appSource
     preset.jx_lib = this.sdkType
     preset.jx_lib_version = this.sdkVersion
     preset.jx_js_source = this.source

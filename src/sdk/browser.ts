@@ -36,14 +36,17 @@ export default class JueXiaoBrowserStatSDK {
   private init(options: InitOption) {
     this.trackData.distinct_id = this.initUserId()
     this.trackData.is_login = false
-    this.initProperties = this.registerPresetProperties()
+    this.initProperties = this.registerPresetProperties(options.appSource)
     this.trackData.properties = this.initProperties
     if (options.userId) {
       this.login(options.userId)
     }
     this.initActiveTimeout()
-    // 自动触发启动事件
-    this.track('$startApp')
+    // 兼容旧的写法 version > 1.3.13
+    if (Number(this.sdkVersion.replace(/./g, '')) > 1313) {
+      // 自动触发启动事件
+      this.track('$startApp')
+    }
   }
   /**
    * 初始化活跃状态定时器
@@ -138,9 +141,10 @@ export default class JueXiaoBrowserStatSDK {
    * @param {Object} params
    * @memberof JueXiaoBrowserStatSDK
    */
-  private registerPresetProperties(): PresetProperties {
+  private registerPresetProperties(appSource?: string): PresetProperties {
     const preset = {} as PresetProperties
     const osInfo = getOsInfo()
+    preset.app_source = appSource
     preset.session_id = this.getSessionId()
     preset.jx_lib = this.sdkType
     preset.jx_js_source = this.source
