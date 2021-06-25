@@ -1,0 +1,55 @@
+name: Node.js Package
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      # 安装依赖
+      - run: yarn install
+      # 单元测试
+      - run: yarn test:prod
+      # 构建
+      - run: yarn build
+      # 报告覆盖率
+      - name: start coverage!
+        run: |
+          touch .coveralls.yml
+          echo "repo_token: ${{secrets.COVERAGE_TOKEN}}" > .coveralls.yml
+          yarn report-coverage
+
+      # 发布 docs 文档到github-pages  需要用到 github access token
+      # 貌似不能直接使用 secrets.GITHUB_TOKEN
+      # 这里在仓库设置->secrets-> 添加 GH_TOKEN,设置为 access token的值  即可正常推送代码
+      - name: deploy Docs!
+        run: |
+          cd docs
+          touch .nojekyll
+          git init
+          git add .
+          git config user.name "yechuanjie"
+          git config user.email "1102684711@qq.com"
+          git commit -m "update gh-pages"
+          git push --force --quiet "https://${{ secrets.GH_TOKEN }}@github.com/Yechuanjie/juexiao-utils.git" master:gh-pages
+
+      # 使用semantic-release 发布到 npm
+      # 需要用到 npm token 和 github token
+      - name: semantic-release
+        run: yarn semantic-release
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # # 设置 .npmrc 文件以发布到 GitHub 包
+      # - uses: actions/setup-node@v1
+      #   with:
+      #     registry-url: 'https://npm.pkg.github.com'
+      #     # 默认为拥有工作流程文件的用户或组织
+      #     # scope: '@octocat'
+      # # 发布到 GitHub 包
+      # - run: npm publish
+      #   env:
+      #     NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
