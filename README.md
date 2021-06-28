@@ -27,9 +27,9 @@ import { BrowserStatSDK } from 'juexiao-stat-sdk'
 const stat = new BrowserStatSDK({
   id: 'test-id', // 这里填写每个项目分配的 project_id
   source: 'pc', // 可选值 pc | wechat | h5
-  debug: true, // 是否开启调试，默认false，可不传  （一般使用 process.env.NODE_ENV != 'production'）
+  debug: true, // 是否开启调试，默认false（一般使用 process.env.NODE_ENV != 'production'）
   userId: 123, // 用户id 初始化sdk前，如果用户已有登录信息，需要传入userId （一般使用 store.state.userInfo.id）
-  appSource: 'h5商城'// 小程序或h5应用标识 非必传
+  appSource: 'h5商城'// 小程序或h5应用标识（pc端可不传，小程序和h5端必传）
 })
 // 全局注册
 Vue.prototype.$stat = stat
@@ -66,9 +66,9 @@ import { MiniStatSDK } from 'juexiao-stat-sdk'
 const stat = new MiniStatSDK({
   id: 'test-id', // 这里填写每个项目分配的 project_id
   source: 'pc', // 可选值 pc | wechat | h5
-  debug: true, // 是否开启调试，默认false，可不传  （一般使用 process.env.NODE_ENV != 'production'）
+  debug: true, // 是否开启调试，默认false（一般使用 process.env.NODE_ENV != 'production'）
   userId: 123, // 用户id 初始化sdk前，如果用户已有登录信息，需要传入userId （一般使用 store.state.userInfo.id）
-  appSource: '小程序-速记本'// 小程序或h5应用标识 非必传
+  appSource: '小程序-速记本'// 小程序或h5应用标识 （pc端可不传，小程序和h5端必传）
 })
 wx.$stat = stat
 ```
