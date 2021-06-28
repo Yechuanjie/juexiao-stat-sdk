@@ -9,7 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       # 安装依赖
-      - run: yarn install
+      - run: yarn install && yarn global add ts-node
       # 单元测试
       - run: yarn test:prod
       # 构建
