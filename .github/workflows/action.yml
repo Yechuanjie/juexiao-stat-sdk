@@ -27,14 +27,6 @@ jobs:
       - name: deploy Docs!
         run: |
           ts-node tools/gh-pages-publish
-          # cd docs
-          # touch .nojekyll
-          # git init
-          # git add .
-          # git config user.name "yechuanjie"
-          # git config user.email "1102684711@qq.com"
-          # git commit -m "update gh-pages"
-          # git push --force --quiet "https://${{ secrets.GH_TOKEN }}@github.com/Yechuanjie/juexiao-stat-sdk.git" master:gh-pages
 
       # 使用semantic-release 发布到 npm
       # 需要用到 npm token 和 github token
