@@ -9,7 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       # 安装依赖
-      - run: yarn install && yarn global add ts-node
+      - run: yarn install
       # 单元测试
       - run: yarn test:prod
       # 构建
@@ -26,7 +26,7 @@ jobs:
       # 这里在仓库设置->secrets-> 添加 GH_TOKEN,设置为 access token的值  即可正常推送代码
       - name: deploy Docs!
         run: |
-          ts-node tools/gh-pages-publish
+          yarn deploy-docs
 
       # 使用semantic-release 发布到 npm
       # 需要用到 npm token 和 github token
