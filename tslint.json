@@ -9,6 +9,8 @@
     ]
   },
   "rules": {
-    "no-floating-promises": false
+    "no-floating-promises": false,
+    "variable-name": false,
+    "radix": false
   }
 }
