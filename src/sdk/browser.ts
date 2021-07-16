@@ -9,8 +9,8 @@ import {
   version,
   SourceType
 } from '../types'
-import { getOsInfo, sendDataWithImg } from '../utils/browser'
-import { generateUUID } from '../utils'
+import { getLocation, getOsInfo, sendDataWithImg } from '../utils/browser'
+import { compareVersion, generateUUID } from '../utils'
 
 export default class JueXiaoBrowserStatSDK {
   private sdkVersion: string = version
@@ -33,7 +33,7 @@ export default class JueXiaoBrowserStatSDK {
     this.isDebug = typeof options.debug === 'boolean' ? options.debug : false
     this.init(options)
   }
-  private init(options: InitOption) {
+  private async init(options: InitOption) {
     this.trackData.distinct_id = this.initUserId()
     this.trackData.is_login = false
     this.initProperties = this.registerPresetProperties(options.appSource)
@@ -41,12 +41,20 @@ export default class JueXiaoBrowserStatSDK {
     if (options.userId) {
       this.login(options.userId)
     }
+
     this.initActiveTimeout()
-    // 兼容旧的写法 version > 1.3.13
-    if (Number(this.sdkVersion.replace(/./g, '')) > 1313) {
+    // 兼容版本 version > 1.3.13
+    if (compareVersion(this.sdkVersion, '1.3.13')) {
       // 自动触发启动事件
       this.track('$startApp')
     }
+
+    // 获取位置并设置预置属性
+    const locationInfo = await getLocation()
+    this.initProperties.jx_longitude = locationInfo.longitude
+    this.initProperties.jx_latitude = locationInfo.latitude
+    // 如果获取位置成功 上报一次jx_location
+    locationInfo.latitude && this.track('jx_location')
   }
   /**
    * 初始化活跃状态定时器

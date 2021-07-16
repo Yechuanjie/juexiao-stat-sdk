@@ -63,6 +63,10 @@ export type PresetProperties = {
   jx_browser?: string
   /** 浏览器版本 */
   jx_browser_version?: string
+  /** 经度 */
+  jx_longitude?: number
+  /** 纬度 */
+  jx_latitude?: number
   /** 注册成功前使用的distinct_id */
   anonymous_id?: string
   /** 注册成功后获得的user id */

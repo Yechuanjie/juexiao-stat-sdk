@@ -1,5 +1,6 @@
 import { Constants, UserEvent } from '../types'
 import { checkPropertyKey } from './index'
+import { wgs84tobd09 } from './location'
 /**
  * 获取操作系统 和 浏览器 信息
  *
@@ -109,4 +110,47 @@ export function sendDataWithImg(id: string, url: string, data: UserEvent, debug:
     }
     img.src = fetchUrl
   }
+}
+
+interface PositionInfo {
+  longitude?: number
+  latitude?: number
+}
+/**
+ * 获取经纬度
+ *
+ * @export
+ * @returns {Promise<PositionInfo>}
+ */
+export function getLocation(): Promise<PositionInfo> {
+  return new Promise(resolve => {
+    const options = {
+      enableHighAccuracy: true,
+      maximumAge: 0
+    }
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        function(position) {
+          const bdInfo = wgs84tobd09(position.coords.longitude, position.coords.latitude)
+          resolve({
+            longitude: bdInfo.longitude,
+            latitude: bdInfo.latitude
+          })
+        },
+        function(error) {
+          console.warn(error.message)
+          resolve({
+            longitude: undefined,
+            latitude: undefined
+          })
+        },
+        options
+      )
+    } else {
+      resolve({
+        longitude: undefined,
+        latitude: undefined
+      })
+    }
+  })
 }

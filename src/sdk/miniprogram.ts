@@ -10,7 +10,8 @@ import {
   SourceType
 } from '../types'
 import { formatSystem, sendData } from '../utils/mini'
-import { generateUUID } from '../utils'
+import { compareVersion, generateUUID } from '../utils'
+import { wgs84tobd09 } from '../utils/location'
 
 export default class JueXiaoMiniStatSDK {
   private sdkVersion: string = version
@@ -33,19 +34,42 @@ export default class JueXiaoMiniStatSDK {
     this.isDebug = typeof options.debug === 'boolean' ? options.debug : false
     this.init(options)
   }
-  private init(options: InitOption) {
+  private async init(options: InitOption) {
     this.trackData.distinct_id = this.initUserId()
     this.trackData.is_login = false
-    this.initProperties = this.registerPresetProperties(options.appSource)
+    // 保证应用在初始调用时有预置属性（此时没有经纬度）
+    this.initProperties = await this.registerPresetProperties(options.appSource)
     this.trackData.properties = this.initProperties
-    console.info('USER_EVENT_MODAL', this.trackData)
+
+    console.info('PRESET_PROPERTIES', this.initProperties)
     if (options.userId) {
       this.login(options.userId)
     }
-    // 兼容旧的写法 version > 1.3.13
-    if (Number(this.sdkVersion.replace(/./g, '')) > 1313) {
+    // 兼容版本 version > 1.3.13
+    if (compareVersion(this.sdkVersion, '1.3.13')) {
       // 自动触发启动事件
       this.track('$startApp')
+    }
+    // 获取位置并设置预置属性
+    const locationInfo = await this.initPosition()
+    this.initProperties.jx_longitude = locationInfo.longitude
+    this.initProperties.jx_latitude = locationInfo.latitude
+    // 如果获取位置成功 上报一次jx_location
+    locationInfo.latitude && this.track('jx_location')
+  }
+  private async initPosition() {
+    try {
+      let info = await wx.getLocation({ type: 'wgs84' })
+      const bdInfo = wgs84tobd09(info.longitude, info.latitude)
+      return {
+        longitude: bdInfo.longitude,
+        latitude: bdInfo.latitude
+      }
+    } catch (error) {
+      return {
+        longitude: undefined,
+        latitude: undefined
+      }
     }
   }
   /**
@@ -79,28 +103,10 @@ export default class JueXiaoMiniStatSDK {
       sendData(this.projectId, Constants.FETCH_IMAGE_URL, this.trackData, this.isDebug)
     }
     trackAction()
-    // try {
-    //   // 每次都需要获取网络类型
-    //   wx.getNetworkType()
-    //     .then(res => {
-    //       this.initProperties.jx_network_type = res.networkType
-    //       trackAction()
-    //     })
-    //     .catch(() => {
-    //       this.initProperties.jx_network_type = 'unknown'
-    //       trackAction()
-    //     })
-    // } catch (error) {
-    //   this.initProperties.jx_network_type = 'unknown'
-    //   trackAction()
-    // }
   }
   track(eventName: string, data = {}) {
-    wx.getNetworkType().then(res => {
-      this.trackData.event = eventName
-      this.initProperties.jx_network_type = res.networkType
-      this._trackEvent('track', data)
-    })
+    this.trackData.event = eventName
+    this._trackEvent('track', data)
   }
   /**
    * 设置预置属性 已存在的字段则覆盖，不存在则自动创建
@@ -110,10 +116,7 @@ export default class JueXiaoMiniStatSDK {
    */
   profileSet(options: object = {}) {
     this.track('$startApp')
-    wx.getNetworkType().then(res => {
-      this.initProperties.jx_network_type = res.networkType
-      this._trackEvent('profileSet', options)
-    })
+    this._trackEvent('profileSet', options)
   }
   /**
    * 设置用户首次属性，与 profileSet 不同的是，如果被设置的用户属性已存在，则这条记录会被忽略，如果属性不存在则会自动创建
@@ -122,10 +125,7 @@ export default class JueXiaoMiniStatSDK {
    * @memberof JueXiaoMiniStatSDK
    */
   profileSetOnce(options: object = {}) {
-    wx.getNetworkType().then(res => {
-      this.initProperties.jx_network_type = res.networkType
-      this._trackEvent('profileSetOnce', options)
-    })
+    this._trackEvent('profileSetOnce', options)
   }
   /**
    * 获取session_id
@@ -144,13 +144,14 @@ export default class JueXiaoMiniStatSDK {
    * @param {Object} params
    * @memberof JueXiaoMiniStatSDK
    */
-  private registerPresetProperties(appSource?: string): PresetProperties {
+  private async registerPresetProperties(appSource?: string): Promise<PresetProperties> {
     const preset = {} as PresetProperties
     preset.app_source = appSource
     preset.jx_lib = this.sdkType
     preset.jx_lib_version = this.sdkVersion
     preset.jx_js_source = this.source
     preset.session_id = this.getSessionId()
+    preset.jx_network_type = (await wx.getNetworkType()).networkType
     const sys = wx.getSystemInfoSync()
     preset.jx_manufacturer = sys['brand']
     preset.jx_device_mode = sys['model']
@@ -159,6 +160,7 @@ export default class JueXiaoMiniStatSDK {
     preset.jx_os = formatSystem(sys['platform'])
     preset.jx_os_version =
       sys['system'].indexOf(' ') > -1 ? sys['system'].split(' ')[1] : sys['system']
+
     console.info(`sdk-version: ${this.sdkVersion}`)
     return preset
   }
@@ -172,14 +174,11 @@ export default class JueXiaoMiniStatSDK {
     if (!loginId) {
       throw new Error('please make sure the login id is correct!')
     }
-    wx.getNetworkType().then(res => {
-      this.trackData.properties.anonymous_id = this.initUserId()
-      this.trackData.properties.register_id = loginId
-      this.initProperties.jx_network_type = res.networkType
-      this._trackEvent('trackSignUp')
-      delete this.trackData.properties['anonymous_id']
-      delete this.trackData.properties['register_id']
-    })
+    this.trackData.properties.anonymous_id = this.initUserId()
+    this.trackData.properties.register_id = loginId
+    this._trackEvent('trackSignUp')
+    delete this.trackData.properties['anonymous_id']
+    delete this.trackData.properties['register_id']
   }
   /**
    * 用户登录 - 用于更新用户id
