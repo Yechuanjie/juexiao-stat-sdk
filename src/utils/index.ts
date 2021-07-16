@@ -46,24 +46,18 @@ export function checkPropertyKey(data: object): boolean {
  */
 export const compareVersion = (curV: string, reqV: string) => {
   if (curV && reqV) {
-    //将两个版本号拆成数字
-    let arr1 = curV.split('.'),
-      arr2 = reqV.split('.')
-    let minLength = Math.min(arr1.length, arr2.length),
-      position = 0,
-      diff = 0
-    //依次比较版本号每一位大小，当对比得出结果后跳出循环（后文有简单介绍）
-    while (
-      position < minLength &&
-      (diff = parseInt(arr1[position]) - parseInt(arr2[position])) == 0
-    ) {
+    let arr1 = curV.split('.')
+    let arr2 = reqV.split('.')
+    let minLength = Math.min(arr1.length, arr2.length)
+    let position = 0
+    let diff = 0
+    while (position < minLength && diff === 0) {
       position++
+      diff = parseInt(arr1[position]) - parseInt(arr2[position])
     }
-    diff = diff != 0 ? diff : arr1.length - arr2.length
-    //若curV大于reqV，则返回true
+    diff = diff !== 0 ? diff : arr1.length - arr2.length
     return diff > 0
   } else {
-    //输入为空
     console.warn('版本号不能为空')
     return false
   }
